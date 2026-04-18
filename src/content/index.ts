@@ -509,43 +509,32 @@ export function isNSCSupportedSubject(subjectIdOrName: string): boolean {
 	);
 }
 
-const SUBJECT_ALIASES: Record<string, string> = {
+const SUBJECT_ALIASES: Record<string, SubjectId> = {
 	'physical-sciences': 'physics',
 	physicalsciences: 'physics',
 	phys: 'physics',
 	physsci: 'physics',
-	mathematics: 'mathematics',
 	math: 'mathematics',
-	chemistry: 'chemistry',
 	chem: 'chemistry',
-	'life-sciences': 'life-sciences',
 	lifesciences: 'life-sciences',
 	biology: 'life-sciences',
 	bio: 'life-sciences',
-	english: 'english',
 	efal: 'english',
-	afrikaans: 'afrikaans',
 	afri: 'afrikaans',
-	geography: 'geography',
 	geog: 'geography',
-	history: 'history',
 	hist: 'history',
-	accounting: 'accounting',
 	acct: 'accounting',
-	economics: 'economics',
 	econ: 'economics',
-	'business-studies': 'business-studies',
 	businessstudies: 'business-studies',
 	business: 'business-studies',
 	'life-orientation': 'lo',
 	lifeorientation: 'lo',
-	lo: 'lo',
-};
+} as const;
 
 export function getSubjectFluentEmoji(id: string): string {
-	const normalized = id.toLowerCase().replace(/\s+/g, '-');
+	const normalized = id.trim().toLowerCase().replace(/\s+/g, '-');
 	const mappedId = SUBJECT_ALIASES[normalized] ?? normalized;
-	return subjectsById.get(mappedId)?.fluentEmoji ?? 'Books';
+	return subjectsById.get(mappedId)?.fluentEmoji ?? '📖';
 }
 
 export function getAchievementDefById(id: string): AchievementDefinition | undefined {

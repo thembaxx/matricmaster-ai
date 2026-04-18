@@ -112,11 +112,13 @@ export default function PastPaperViewer({
 			paperId: paperId,
 			lastUpdated: Date.now(),
 		});
+	}, [paper, setContext]);
 
-		return () => {
-			clearContext();
-		};
-	}, [paper, setContext, clearContext]);
+	// Only clear context when the entire viewer unmounts
+	// biome-ignore lint/correctness/useExhaustiveDependencies: instruction requested empty dependency array
+	useEffect(() => {
+		return () => clearContext();
+	}, []);
 
 	const checkOfflineAvailability = useCallback(async () => {
 		if (!paper?.id) return;

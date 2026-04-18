@@ -1,6 +1,7 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
+import { AI_MODELS } from '@/lib/ai-config';
 
 function getGeminiModel() {
 	const apiKey = process.env.GEMINI_API_KEY;
@@ -8,7 +9,7 @@ function getGeminiModel() {
 		throw new Error('GEMINI_API_KEY is not configured');
 	}
 	const google = createGoogleGenerativeAI({ apiKey });
-	return google('gemini-2.5-flash');
+	return google(AI_MODELS.PRIMARY);
 }
 
 export interface LearningLoopAction {

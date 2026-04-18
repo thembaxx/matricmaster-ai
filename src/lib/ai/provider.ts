@@ -5,9 +5,9 @@ import { createMistral } from '@ai-sdk/mistral';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateObject, generateText, type LanguageModel, streamText } from 'ai';
 import { z } from 'zod';
+import { AI_MODELS } from '../ai-config';
 import { isQuotaError } from './quota-error';
 
-const DEFAULT_MODEL = 'gemini-2.0-flash';
 const STORAGE_KEY = 'lumni_user_gemini_api_key';
 
 export interface ImagePart {
@@ -47,7 +47,7 @@ function getApiKey(): string | undefined {
 }
 
 function getModel(): string {
-	return process.env.GEMINI_MODEL || DEFAULT_MODEL;
+	return process.env.GEMINI_MODEL || AI_MODELS.PRIMARY;
 }
 
 export interface AIConfig {
@@ -167,9 +167,10 @@ export async function generateTextWithAI(options: GenerateOptions): Promise<stri
 
 	let lastError: Error | null = null;
 
-	for (const getProvider of PROVIDERS) {
+	for (const providerFactory of PROVIDERS) {
+		const providerName = providerFactory.name || 'unknown';
 		try {
-			const provider = getProvider();
+			const provider = providerFactory();
 			const model = provider.createModel();
 
 			const result = await generateText({
@@ -185,7 +186,6 @@ export async function generateTextWithAI(options: GenerateOptions): Promise<stri
 			lastError = error instanceof Error ? error : new Error(String(error));
 
 			const isQuota = isQuotaError(error);
-			const providerName = getProvider().name;
 			console.warn(`Provider ${providerName} failed (quota: ${isQuota}): ${lastError.message}`);
 		}
 	}
@@ -216,7 +216,13 @@ export function streamTextWithAI(options: StreamOptions) {
 }
 
 export async function generateWithFallback(prompt: string, system?: string): Promise<string> {
-	const models = ['gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.5-flash'];
+	const models = [
+		AI_MODELS.PRIMARY,
+		AI_MODELS.FALLBACK_1,
+		AI_MODELS.FALLBACK_2,
+		AI_MODELS.FALLBACK_3,
+		AI_MODELS.FALLBACK_4,
+	];
 
 	let lastError: Error | null = null;
 
@@ -244,19 +250,22 @@ export async function generateWithFallback(prompt: string, system?: string): Pro
 
 export async function generateWithMultiProviderFallback(
 	prompt: string,
-	system?: string
+	system?: string,
+	abortSignal?: AbortSignal
 ): Promise<{ text: string; provider: string }> {
 	let lastError: Error | null = null;
 
-	for (const getProvider of PROVIDERS) {
+	for (const providerFactory of PROVIDERS) {
+		const providerName = providerFactory.name || 'unknown';
 		try {
-			const provider = getProvider();
+			const provider = providerFactory();
 			const model = provider.createModel();
 
 			const result = await generateText({
 				model,
 				prompt,
 				system,
+				abortSignal,
 			});
 
 			return { text: result.text, provider: provider.name };
@@ -264,7 +273,6 @@ export async function generateWithMultiProviderFallback(
 			lastError = error instanceof Error ? error : new Error(String(error));
 
 			const isQuota = isQuotaError(error);
-			const providerName = getProvider().name;
 			console.warn(`Provider ${providerName} failed (quota: ${isQuota}): ${lastError.message}`);
 		}
 	}
@@ -334,7 +342,7 @@ export async function generateWithMultimodal(
 	}
 
 	const google = createGoogleGenerativeAI({ apiKey });
-	const modelName = options.model || 'gemini-2.0-flash';
+	const modelName = options.model || AI_MODELS.PRIMARY;
 	const model = google(modelName);
 
 	const content: UserMessageContent = [
@@ -372,7 +380,7 @@ export async function generateTextFromPDF(
 
 	try {
 		const google = createGoogleGenerativeAI({ apiKey });
-		const modelName = options.model || 'gemini-2.0-flash';
+		const modelName = options.model || AI_MODELS.PRIMARY;
 		const model = google(modelName);
 
 		const result = await generateText({
@@ -404,9 +412,17 @@ export async function generateTextFromPDF(
 					'@/services/pdfLocalService'
 				);
 				const buffer = base64ToArrayBuffer(pdfBase64);
-				const extractedText = await extractTextFromPDFLocal(buffer);
+				const rawText = await extractTextFromPDFLocal(buffer);
 
-				const fallbackPrompt = `${prompt}\n\nDOCUMENT CONTENT (EXTRACTED MANUALLY):\n\n${extractedText}`;
+				// Truncate text to avoid context window issues with fallback providers
+				const MAX_FALLBACK_CHARS = 40000;
+				const boundedText =
+					rawText.length > MAX_FALLBACK_CHARS
+						? rawText.substring(0, MAX_FALLBACK_CHARS) +
+							'\n\n[NOTICE: Document content truncated due to size limits]'
+						: rawText;
+
+				const fallbackPrompt = `${prompt}\n\nDOCUMENT CONTENT (EXTRACTED MANUALLY):\n\n${boundedText}`;
 
 				return await generateTextWithAI({
 					prompt: fallbackPrompt,
@@ -489,7 +505,7 @@ export async function generateWithOCR(
 	const google = createGoogleGenerativeAI({ apiKey });
 
 	try {
-		const model = google('gemini-2.0-flash');
+		const model = google(AI_MODELS.PRIMARY);
 
 		const result = await generateObject({
 			model,
@@ -503,9 +519,10 @@ export async function generateWithOCR(
 	} catch (googleError) {
 		console.warn('Google Gemini 1.5 Flash OCR failed, trying fallback providers:', googleError);
 
-		for (const getProvider of PROVIDERS) {
+		for (const providerFactory of PROVIDERS) {
+			const providerName = providerFactory.name || 'unknown';
 			try {
-				const provider = getProvider();
+				const provider = providerFactory();
 				const model = provider.createModel();
 
 				const result = await generateObject({
@@ -518,7 +535,6 @@ export async function generateWithOCR(
 
 				return result.object;
 			} catch (providerError) {
-				const providerName = getProvider().name;
 				console.warn(`Provider ${providerName} OCR failed:`, providerError);
 			}
 		}

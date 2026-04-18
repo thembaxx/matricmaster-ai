@@ -418,6 +418,12 @@ async function performNoAIExtraction(
 		const buffer = base64ToArrayBuffer(base64);
 		const text = await extractTextFromPDFLocal(buffer);
 
+		if (!text || text.trim().length === 0) {
+			throw new Error(
+				'Local PDF text extraction returned no content. The PDF might be scanned or protected.'
+			);
+		}
+
 		// Basic regex parsing for SC NSC style numbering (1.1, 1.2, or QUESTION 1)
 		const questionRegex =
 			/(\n\d+\.\d+|\nQUESTION\s+\d+)([\s\S]*?)(?=(\n\d+\.\d+|\nQUESTION\s+\d+)|$)/gi;

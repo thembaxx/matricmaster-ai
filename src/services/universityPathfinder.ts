@@ -2,6 +2,7 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
+import { AI_MODELS } from '@/lib/ai-config';
 import { getDb } from '@/lib/db';
 import { apsMilestones, universityTargets } from '@/lib/db/schema';
 import { processGamificationEvent } from './gamificationStacking';
@@ -12,7 +13,7 @@ function getGeminiModel() {
 		throw new Error('GEMINI_API_KEY is not configured');
 	}
 	const google = createGoogleGenerativeAI({ apiKey });
-	return google('gemini-2.5-flash');
+	return google(AI_MODELS.PRIMARY);
 }
 
 interface StudyMilestone {

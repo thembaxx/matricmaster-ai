@@ -4,6 +4,7 @@ import { createGroq } from '@ai-sdk/groq';
 import { createMistral } from '@ai-sdk/mistral';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateText } from 'ai';
+import { AI_MODELS } from '../ai-config';
 import { aiQuotaManager, type QuotaStatus } from './quota-manager';
 
 export interface ChatMessage {
@@ -51,7 +52,7 @@ function createModelForProvider(provider: QuotaStatus['provider']) {
 	switch (provider) {
 		case 'google': {
 			const google = createGoogleGenerativeAI({ apiKey });
-			return google('gemini-2.0-flash');
+			return google(AI_MODELS.PRIMARY);
 		}
 		case 'groq': {
 			const groq = createGroq({ apiKey });

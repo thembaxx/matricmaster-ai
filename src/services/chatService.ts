@@ -276,7 +276,7 @@ export async function getAIResponse(
 	messages: { role: string; content: string }[],
 	userContext: UserContext,
 	subject: string,
-	_signal?: AbortSignal
+	signal?: AbortSignal
 ): Promise<string> {
 	const systemPrompt = buildSystemPrompt(userContext, subject);
 
@@ -313,7 +313,8 @@ export async function getAIResponse(
 			conversationHistory
 				.map((m) => `${m.role === 'assistant' ? 'Assistant' : 'User'}: ${m.content}`)
 				.join('\n'),
-			systemPrompt
+			systemPrompt,
+			signal
 		);
 
 		if (!aiResponse) {

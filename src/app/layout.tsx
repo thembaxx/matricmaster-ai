@@ -37,10 +37,10 @@ const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: {
-		default: appConfig.name,
-		template: `%s | ${appConfig.name}`,
+		default: appConfig.name.toLowerCase(),
+		template: `%s | ${appConfig.name.toLowerCase()}`,
 	},
-	description: appConfig.description,
+	description: appConfig.description.toLowerCase(),
 	keywords: [
 		'matric',
 		'grade 12',
@@ -53,9 +53,9 @@ export const metadata: Metadata = {
 		'chemistry',
 		'nsc',
 	],
-	authors: [{ name: appConfig.name }],
-	creator: appConfig.name,
-	publisher: appConfig.name,
+	authors: [{ name: appConfig.name.toLowerCase() }],
+	creator: appConfig.name.toLowerCase(),
+	publisher: appConfig.name.toLowerCase(),
 	formatDetection: {
 		email: false,
 		address: false,
@@ -66,31 +66,31 @@ export const metadata: Metadata = {
 	appleWebApp: {
 		capable: true,
 		statusBarStyle: 'default',
-		title: appConfig.name,
+		title: appConfig.name.toLowerCase(),
 	},
 	openGraph: {
 		type: 'website',
 		locale: 'en_za',
 		url: '/',
-		title: `${appConfig.name} - Master Your Matric Exams`,
+		title: `${appConfig.name.toLowerCase()} - master your matric exams`,
 		description:
-			'Interactive past papers and step-by-step guides for South African Grade 12 students.',
-		siteName: appConfig.name,
+			'interactive past papers and step-by-step guides for south african grade 12 students.',
+		siteName: appConfig.name.toLowerCase(),
 		images: [
 			{
-				url: `/api/og?title=${appConfig.name.replace(' ', '+')}&description=Master+your+Matric+exams`,
+				url: `/api/og?title=${appConfig.name.toLowerCase().replace(' ', '+')}&description=master+your+matric+exams`,
 				width: 1200,
 				height: 630,
-				alt: `${appConfig.name} - Master Your Matric Exams`,
+				alt: `${appConfig.name.toLowerCase()} - master your matric exams`,
 			},
 		],
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: appConfig.name,
-		description: 'Master your Matric exams through interactive practice.',
+		title: appConfig.name.toLowerCase(),
+		description: 'master your matric exams through interactive practice.',
 		images: [
-			`/api/og?title=${appConfig.name.replace(' ', '+')}&description=master+your+matric+exams`,
+			`/api/og?title=${appConfig.name.toLowerCase().replace(' ', '+')}&description=master+your+matric+exams`,
 		],
 		creator: '@lumni',
 	},
@@ -121,19 +121,19 @@ const jsonLd = {
 	'@graph': [
 		{
 			'@type': 'Organization',
-			name: appConfig.name,
+			name: appConfig.name.toLowerCase(),
 			url: baseUrl,
-			description: appConfig.description,
+			description: appConfig.description.toLowerCase(),
 			logo: `${baseUrl}/icon-192.png`,
 		},
 		{
 			'@type': 'WebApplication',
-			name: appConfig.name,
+			name: appConfig.name.toLowerCase(),
 			url: baseUrl,
 			description:
-				'Interactive past papers and step-by-step guides for South African Grade 12 students. Personalized explanations and practice for NSC exams.',
-			applicationCategory: 'EducationalApplication',
-			operatingSystem: 'Any',
+				'interactive past papers and step-by-step guides for south african grade 12 students. personalized explanations and practice for nsc exams.',
+			applicationCategory: 'educationalapplication',
+			operatingSystem: 'any',
 		},
 	],
 };
