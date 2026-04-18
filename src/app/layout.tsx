@@ -12,7 +12,7 @@ import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistratio
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
-import { domAnimation, LazyMotion } from 'framer-motion';
+import { MotionConfig } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { appConfig } from '../app.config';
 import {
@@ -180,7 +180,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				>
 					skip to main content
 				</a>
-				<LazyMotion features={domAnimation}>
+				<MotionConfig>
 					<ErrorBoundary>
 						<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
 							<LiveRegionProvider>
@@ -196,7 +196,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 							</LiveRegionProvider>
 						</ThemeProvider>
 					</ErrorBoundary>
-				</LazyMotion>
+				</MotionConfig>
 				<DeferredAnalytics />
 			</body>
 		</html>
