@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import type { CurriculumSubject as Subject, Topic } from '@/content';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 import { TopicCardAnimated } from './TopicCard';
 
@@ -96,7 +97,7 @@ export function TopicTree({
 						initial={{ opacity: 0, height: 0 }}
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}
-						transition={{ duration: 0.3 }}
+						transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 						className="space-y-3 pl-4"
 					>
 						{subject.topics.map((topic, tIdx) => (

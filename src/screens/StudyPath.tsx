@@ -11,6 +11,7 @@ import { SchedulePathModal } from '@/components/StudyPath/SchedulePathModal';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import studyPathsData from '@/content/study-paths.json';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import type { PathScheduleResult, StudyStep } from '@/services/studyPathSchedulerService';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
 
@@ -117,7 +118,7 @@ export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScree
 								className="h-full bg-primary rounded-full"
 								initial={{ width: 0 }}
 								animate={{ width: `${progressPercent}%` }}
-								transition={{ duration: 0.8, ease: 'easeOut' }}
+								transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 							/>
 						</div>
 						<p className="text-xs text-muted-foreground mt-2">

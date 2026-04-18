@@ -6,6 +6,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFeatureTooltip } from '@/hooks/use-feature-tooltip';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface FeatureTooltipProps {
 	isVisible: boolean;
@@ -68,7 +69,7 @@ export function FeatureTooltip({
 						initial={{ opacity: 0, scale: 0.95, y: 8 }}
 						animate={{ opacity: 1, scale: 1, y: 0 }}
 						exit={{ opacity: 0, scale: 0.95, y: 8 }}
-						transition={{ duration: 0.2, ease: 'easeOut' }}
+						transition={{ duration: DURATION.quick, ease: EASING.easeOut }}
 						className={`absolute z-50 w-full max-w-72 ${positionClasses[position]} pointer-events-none`}
 					>
 						<div className="bg-background rounded-2xl shadow-soft-lg border border-border/50 p-4 pointer-events-auto">

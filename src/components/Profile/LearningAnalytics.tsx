@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Calendar, Clock, Flame, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DURATION } from '@/lib/animation-presets';
 
 interface UserStats {
 	streak: number;
@@ -44,7 +45,7 @@ function StreakDisplay({ streak }: { streak: number }) {
 						<motion.div
 							initial={{ scale: 0.8, opacity: 0 }}
 							animate={{ scale: 1, opacity: 1 }}
-							transition={{ duration: 0.5, type: 'spring' }}
+							transition={{ duration: DURATION.normal, type: 'spring' }}
 							className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-orange to-orange-400 flex items-center justify-center shadow-lg shadow-primary-orange/30"
 						>
 							<Flame className="w-8 h-8 text-white fill-white" />
@@ -149,7 +150,7 @@ function ActivityHeatmap({ weeklyStudyMinutes }: { weeklyStudyMinutes: number[] 
 								<motion.div
 									initial={{ height: 0 }}
 									animate={{ height: `${Math.max(height, 8)}%` }}
-									transition={{ duration: 0.5, delay: index * 0.1 }}
+									transition={{ duration: DURATION.normal, delay: index * 0.1 }}
 									className="w-full rounded-lg bg-accent-lime/80 relative overflow-hidden"
 								>
 									<div className="absolute inset-0 bg-accent-lime/50 animate-pulse" />
@@ -189,7 +190,7 @@ function StudyStreakCalendar({ streak }: { streak: number }) {
 							key={index}
 							initial={{ scale: 0, opacity: 0 }}
 							animate={{ scale: 1, opacity: 1 }}
-							transition={{ duration: 0.3, delay: index * 0.01 }}
+							transition={{ duration: DURATION.normal, delay: index * 0.01 }}
 							className="w-4 h-4 rounded-full border border-border/50"
 							style={{
 								backgroundColor: studied ? 'var(--accent-lime)' : 'transparent',

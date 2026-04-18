@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { DURATION } from '@/lib/animation-presets';
 import { claimLoginBonus, getLoginBonusStatus } from '@/lib/db/login-bonus-actions';
 
 export function DailyLoginBonus() {
@@ -99,7 +100,7 @@ export function DailyLoginBonus() {
 					<m.div
 						initial={{ scaleX: 1 }}
 						animate={{ scaleX: 0 }}
-						transition={{ delay: 2.5, duration: 0.5 }}
+						transition={{ delay: 2.5, duration: DURATION.normal }}
 						className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/40 origin-left"
 					/>
 				</div>

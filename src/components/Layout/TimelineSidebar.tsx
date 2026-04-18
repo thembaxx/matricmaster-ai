@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { SUBJECTS } from '@/content';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { authClient } from '@/lib/auth-client';
 import { getTodayTimelineEventsAction } from '@/lib/db/actions';
 import { buildQuizUrl } from '@/lib/url-utils';
@@ -241,7 +242,7 @@ export function TimelineSidebar() {
 							className="h-full bg-primary rounded-full"
 							initial={{ width: 0 }}
 							animate={{ width: `${progressPercent}%` }}
-							transition={{ duration: 0.5, ease: 'easeOut' }}
+							transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 						/>
 					</div>
 				</div>
@@ -284,7 +285,7 @@ function TimelineEventCard({
 			<m.button
 				initial={{ opacity: 0, x: -20 }}
 				animate={{ opacity: 1, x: 0 }}
-				transition={{ delay: index * 0.08, duration: 0.4 }}
+				transition={{ delay: index * 0.08, duration: DURATION.normal, ease: EASING.easeOut }}
 				whileTap={{ scale: 0.98 }}
 				onClick={isClickable ? onClick : undefined}
 				disabled={!isClickable}

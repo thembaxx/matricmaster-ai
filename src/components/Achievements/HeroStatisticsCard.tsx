@@ -4,6 +4,7 @@ import { m } from 'framer-motion';
 import { appConfig } from '@/app.config';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { DURATION } from '@/lib/animation-presets';
 
 export function HeroStatisticsCard({
 	masteryLevel,
@@ -20,7 +21,7 @@ export function HeroStatisticsCard({
 		<m.div
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.6 }}
+			transition={{ duration: DURATION.normal }}
 		>
 			<Card className="rounded-2xl sm:rounded-2xl p-6 sm:p-12 relative overflow-hidden bg-primary text-primary-foreground border-none shadow-soft-lg shadow-primary/20">
 				<div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />

@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface UserSession {
 	name?: string;
@@ -86,7 +87,7 @@ export default function AccountSettings({
 			<m.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.4 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 			>
 				<Card className="rounded-[2rem] bg-card/50 backdrop-blur-sm border border-border/50">
 					<CardHeader>

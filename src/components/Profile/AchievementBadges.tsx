@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { ACHIEVEMENTS } from '@/content';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface AchievementBadgesProps {
 	unlockedIds: string[];
@@ -26,7 +27,7 @@ export const AchievementBadges = memo(function AchievementBadges({
 						key={achievement.id}
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: index * 0.02 }}
+						transition={{ delay: index * 0.02, duration: DURATION.normal, ease: EASING.easeOut }}
 						className="group relative"
 					>
 						<div

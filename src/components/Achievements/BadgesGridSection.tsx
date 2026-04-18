@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { DURATION, EASING, STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 
 interface BadgeData {
@@ -62,7 +62,11 @@ export function BadgesGridSection({ filteredBadges }: { filteredBadges: BadgeDat
 							layout
 							initial={{ opacity: 0, scale: 0.8 }}
 							animate={{ opacity: 1, scale: 1 }}
-							transition={{ duration: 0.3, delay: Math.min(index * 0.02, 0.3) }}
+							transition={{
+								duration: DURATION.normal,
+								delay: Math.min(index * 0.02, 0.3),
+								ease: EASING.easeOut,
+							}}
 						>
 							<AchievementBadge badge={badge} />
 						</m.div>

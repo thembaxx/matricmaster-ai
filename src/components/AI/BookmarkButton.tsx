@@ -6,6 +6,7 @@ import { m } from 'framer-motion';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface BookmarkButtonProps {
 	messageId: string;
@@ -83,7 +84,7 @@ export function BookmarkButton({ messageId, content, role, subject }: BookmarkBu
 		>
 			<m.div
 				animate={isBookmarked ? { scale: [1, 1.3, 1] } : { scale: [1, 0.8, 1] }}
-				transition={{ duration: 0.3 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 			>
 				{isBookmarked ? (
 					<HugeiconsIcon icon={Bookmark01Icon} className="h-4 w-4 text-primary" />

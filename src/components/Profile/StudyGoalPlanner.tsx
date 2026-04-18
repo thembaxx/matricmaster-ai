@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import type { UserStats } from '@/hooks/useProfile';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface StudyGoalPlannerProps {
 	userStats?: UserStats | null;
@@ -288,7 +289,7 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 										<m.div
 											initial={{ width: 0 }}
 											animate={{ width: `${progress}%` }}
-											transition={{ duration: 0.8, ease: 'easeOut' }}
+											transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 											className={`h-full rounded-full ${subject.bgColor}`}
 										/>
 									</div>

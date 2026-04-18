@@ -13,6 +13,7 @@ import { appConfig } from '@/app.config';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 
@@ -100,7 +101,7 @@ export function AIExplanationCard({
 							initial={{ opacity: 0, height: 0 }}
 							animate={{ opacity: 1, height: 'auto' }}
 							exit={{ opacity: 0, height: 0 }}
-							transition={{ duration: 0.3, ease: 'easeInOut' }}
+							transition={{ duration: DURATION.normal, ease: EASING.easeInOut }}
 						>
 							<div className="pt-4">
 								<Separator className="mb-4" />
