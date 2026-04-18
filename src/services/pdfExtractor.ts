@@ -243,18 +243,50 @@ export async function extractQuestionsFromPDF(
 				logWarn('pdf-extraction', `Full extraction failed for ${paperId}, trying fallback`, {
 					error: error instanceof Error ? error.message : 'Unknown error',
 				});
-				extractedData = await performExtractionBySections(
-					base64,
-					paperId,
-					subject,
-					paper,
-					year,
-					month
-				);
-				logInfo('pdf-extraction', `Fallback extraction successful for ${paperId}`, {
-					questionsCount: extractedData.questions.length,
-					method: 'fallback',
-				});
+
+				try {
+					extractedData = await performExtractionBySections(
+						base64,
+						paperId,
+						subject,
+						paper,
+						year,
+						month
+					);
+					logInfo('pdf-extraction', `Fallback extraction successful for ${paperId}`, {
+						questionsCount: extractedData.questions.length,
+						method: 'fallback_ai',
+					});
+				} catch (fallbackError) {
+					logError(
+						'pdf-extraction',
+						`AI fallback failed for ${paperId}, attempting local extraction`,
+						{
+							error: fallbackError instanceof Error ? fallbackError.message : 'Unknown error',
+						}
+					);
+
+					// ULTIMATE FALLBACK: Local text extraction + Basic Regex Parsing
+					try {
+						extractedData = await performNoAIExtraction(
+							base64,
+							paperId,
+							subject,
+							paper,
+							year,
+							month
+						);
+						logInfo('pdf-extraction', `Local non-AI extraction successful for ${paperId}`, {
+							questionsCount: extractedData.questions.length,
+							method: 'local_fallback',
+						});
+					} catch (localError) {
+						logError('pdf-extraction', `All extraction methods failed for ${paperId}`, {
+							error: localError instanceof Error ? localError.message : 'Unknown error',
+						});
+						throw localError;
+					}
+				}
 			}
 		}
 
@@ -369,6 +401,71 @@ Combine them into a single JSON structure for ${subject} ${paper} ${year} (${mon
 		return extractedPaperSchema.parse(JSON.parse(cleaned));
 	} catch (error) {
 		console.debug('[PDF Extractor] Section extraction failed:', error);
+		throw error;
+	}
+}
+
+async function performNoAIExtraction(
+	base64: string,
+	paperId: string,
+	subject: string,
+	paper: string,
+	year: number,
+	month: string
+): Promise<ExtractedPaper> {
+	try {
+		const { extractTextFromPDFLocal, base64ToArrayBuffer } = await import('./pdfLocalService');
+		const buffer = base64ToArrayBuffer(base64);
+		const text = await extractTextFromPDFLocal(buffer);
+
+		// Basic regex parsing for SC NSC style numbering (1.1, 1.2, or QUESTION 1)
+		const questionRegex =
+			/(\n\d+\.\d+|\nQUESTION\s+\d+)([\s\S]*?)(?=(\n\d+\.\d+|\nQUESTION\s+\d+)|$)/gi;
+		const questions: ExtractedQuestion[] = [];
+		let match: RegExpExecArray | null;
+
+		while ((match = questionRegex.exec(text)) !== null) {
+			const qNum = match[1].trim();
+			const qBody = match[2].trim();
+			if (qBody.length > 5) {
+				questions.push({
+					id: `${paperId}-${qNum.replace(/\s+/g, '')}`,
+					questionNumber: qNum,
+					questionText: qBody,
+					marks: 0,
+					difficulty: 'medium',
+					topic: 'General',
+				});
+			}
+		}
+
+		if (questions.length === 0) {
+			// If no questions found via regex, just chunk the text
+			const chunks = text.match(/[\s\S]{1,2000}/g) || [text];
+			chunks.forEach((chunk, index) => {
+				questions.push({
+					id: `${paperId}-chunk-${index + 1}`,
+					questionNumber: (index + 1).toString(),
+					questionText: chunk,
+					marks: 0,
+					topic: 'General',
+					difficulty: 'medium',
+				});
+			});
+		}
+
+		return {
+			paperId,
+			subject,
+			paper,
+			year,
+			month,
+			questions,
+		};
+	} catch (error) {
+		logError('pdf-extraction', 'No-AI extraction failed', {
+			error: error instanceof Error ? error.message : 'Unknown error',
+		});
 		throw error;
 	}
 }

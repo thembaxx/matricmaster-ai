@@ -7,7 +7,7 @@ import { generateObject, generateText, type LanguageModel, streamText } from 'ai
 import { z } from 'zod';
 import { isQuotaError } from './quota-error';
 
-const DEFAULT_MODEL = 'gemini-2.5-flash';
+const DEFAULT_MODEL = 'gemini-2.0-flash';
 const STORAGE_KEY = 'lumni_user_gemini_api_key';
 
 export interface ImagePart {
@@ -216,7 +216,7 @@ export function streamTextWithAI(options: StreamOptions) {
 }
 
 export async function generateWithFallback(prompt: string, system?: string): Promise<string> {
-	const models = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-pro'];
+	const models = ['gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.5-flash'];
 
 	let lastError: Error | null = null;
 
@@ -370,26 +370,56 @@ export async function generateTextFromPDF(
 		throw new Error('GEMINI_API_KEY is not configured');
 	}
 
-	const google = createGoogleGenerativeAI({ apiKey });
-	const modelName = options.model || 'gemini-2.0-flash';
-	const model = google(modelName);
+	try {
+		const google = createGoogleGenerativeAI({ apiKey });
+		const modelName = options.model || 'gemini-2.0-flash';
+		const model = google(modelName);
 
-	const result = await generateText({
-		model,
-		messages: [
-			{
-				role: 'user',
-				content: [
-					{ type: 'text' as const, text: prompt },
-					{ type: 'image' as const, image: pdfBase64, mimeType: 'application/pdf' },
-				] as UserMessageContent,
-			},
-		],
-		system,
-		temperature,
-	});
+		const result = await generateText({
+			model,
+			messages: [
+				{
+					role: 'user',
+					content: [
+						{ type: 'text' as const, text: prompt },
+						{ type: 'image' as const, image: pdfBase64, mimeType: 'application/pdf' },
+					] as UserMessageContent,
+				},
+			],
+			system,
+			temperature,
+		});
 
-	return result.text;
+		return result.text;
+	} catch (error) {
+		const isQuota = isQuotaError(error);
+		if (isQuota) {
+			console.warn(
+				'[AI Provider] Gemini PDF quota exceeded, falling back to local text extraction + alternative providers'
+			);
+
+			try {
+				// Fallback: Extract text locally and use other providers
+				const { extractTextFromPDFLocal, base64ToArrayBuffer } = await import(
+					'@/services/pdfLocalService'
+				);
+				const buffer = base64ToArrayBuffer(pdfBase64);
+				const extractedText = await extractTextFromPDFLocal(buffer);
+
+				const fallbackPrompt = `${prompt}\n\nDOCUMENT CONTENT (EXTRACTED MANUALLY):\n\n${extractedText}`;
+
+				return await generateTextWithAI({
+					prompt: fallbackPrompt,
+					system,
+					temperature,
+				});
+			} catch (fallbackError) {
+				console.error('[AI Provider] PDF fallback failed:', fallbackError);
+				throw error; // Throw original quota error if fallback also fails
+			}
+		}
+		throw error;
+	}
 }
 
 export async function generateStructuredTextFromPDF<T>(
