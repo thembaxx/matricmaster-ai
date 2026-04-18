@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { appConfig } from '@/app.config';

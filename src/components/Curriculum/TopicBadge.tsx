@@ -1,8 +1,9 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { Flame, TrendingUpIcon } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { Badge } from '@/components/ui/badge';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface TopicBadgeProps {
 	weightage: number;
@@ -20,10 +21,13 @@ export function TopicBadge({ weightage, examPaper }: TopicBadgeProps) {
 			className="flex items-center gap-1"
 			initial={{ opacity: 0, scale: 0.8 }}
 			animate={{ opacity: 1, scale: 1 }}
-			transition={{ duration: 0.2 }}
+			transition={{ duration: DURATION.quick, ease: EASING.easeOut }}
 		>
 			{isHighWeight && (
-				<m.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.15 }}>
+				<m.div
+					whileHover={{ scale: 1.05 }}
+					transition={{ duration: DURATION.quick, ease: EASING.easeOut }}
+				>
 					<Badge
 						variant="secondary"
 						className="bg-gradient-to-r from-red-500 to-orange-500 text-white gap-1 shadow-sm"
@@ -34,7 +38,10 @@ export function TopicBadge({ weightage, examPaper }: TopicBadgeProps) {
 				</m.div>
 			)}
 			{isMediumWeight && !isHighWeight && (
-				<m.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.15 }}>
+				<m.div
+					whileHover={{ scale: 1.05 }}
+					transition={{ duration: DURATION.quick, ease: EASING.easeOut }}
+				>
 					<Badge
 						variant="outline"
 						className="gap-1 border-amber-400/50 text-amber-700 bg-amber-50 dark:bg-amber-950/30"

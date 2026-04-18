@@ -2,10 +2,11 @@
 
 import { PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFocusModeContext } from '@/contexts/FocusModeContext';
+import { DURATION } from '@/lib/animation-presets';
 
 function formatExamTime(seconds: number) {
 	const h = Math.floor(seconds / 3600);
@@ -70,7 +71,7 @@ function ExamSimulationContent() {
 							strokeDasharray={`${CIRC}`}
 							initial={{ strokeDashoffset: `${CIRC}` }}
 							animate={{ strokeDashoffset: `${CIRC * (1 - progress / 100)}` }}
-							transition={{ duration: 0.5 }}
+							transition={{ duration: DURATION.normal }}
 						/>
 					</svg>
 					<div className="absolute inset-0 flex flex-col items-center justify-center">

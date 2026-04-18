@@ -1,9 +1,10 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { Award, Target } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { DURATION } from '@/lib/animation-presets';
 
 interface APSProgressCardProps {
 	currentAps: number;
@@ -42,13 +43,13 @@ export function APSProgressCard({
 						className="text-center"
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.4 }}
+						transition={{ duration: DURATION.normal }}
 					>
 						<m.div
 							className="text-5xl font-black tracking-tight"
 							initial={{ scale: 0.8, opacity: 0 }}
 							animate={{ scale: 1, opacity: 1 }}
-							transition={{ duration: 0.5, delay: 0.1 }}
+							transition={{ duration: DURATION.normal, delay: 0.1 }}
 						>
 							{currentAps}
 						</m.div>
@@ -65,7 +66,7 @@ export function APSProgressCard({
 					<m.div
 						initial={{ opacity: 0, scaleX: 0 }}
 						animate={{ opacity: 1, scaleX: 1 }}
-						transition={{ duration: 0.6, delay: 0.2 }}
+						transition={{ duration: DURATION.slower, delay: 0.2 }}
 					>
 						<Progress
 							value={progressPercent}

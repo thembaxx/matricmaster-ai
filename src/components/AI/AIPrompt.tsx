@@ -1,7 +1,7 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
 import { Loader2, Mic, MicOff, Send, Sparkles } from 'lucide-react';
+import { AnimatePresence, motion as m } from 'motion/react';
 import type React from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';

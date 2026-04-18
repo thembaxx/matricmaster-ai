@@ -5,7 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { GenerateFlashcardsFromPastPaper } from '@/components/Flashcards/GenerateFlashcardsFromPastPaper';
 import { Badge } from '@/components/ui/badge';

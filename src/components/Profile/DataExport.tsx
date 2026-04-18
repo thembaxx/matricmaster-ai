@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { Download, FileDown, Image, Share2 } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 

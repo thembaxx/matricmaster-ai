@@ -1,7 +1,8 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { LANDING_STATS } from '@/content/landing';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 const STATS = LANDING_STATS;
 
@@ -12,7 +13,7 @@ export function StatsSection() {
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="max-w-7xl mx-auto px-6"
 			>
 				<div className="relative rounded-[var(--radius-2xl)] bg-muted/30 p-8 lg:p-12 overflow-hidden">
@@ -24,7 +25,7 @@ export function StatsSection() {
 								initial={{ opacity: 0, y: 20 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
-								transition={{ duration: 0.5, delay: index * 0.1 }}
+								transition={{ duration: DURATION.normal, ease: EASING.easeOut, delay: index * 0.1 }}
 								className="text-center"
 							>
 								<p className="text-3xl lg:text-4xl font-bold text-primary mb-2 font-numeric">

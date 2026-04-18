@@ -2,7 +2,7 @@
 
 import { BrainIcon, CalculatorIcon, FlashIcon, StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform } from 'motion/react';
 import Image from 'next/image';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 

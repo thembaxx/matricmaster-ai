@@ -10,7 +10,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import * as Dialog from '@radix-ui/react-dialog';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';

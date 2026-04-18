@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { AlertCircle, BrainIcon, RefreshCw, Upload } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 

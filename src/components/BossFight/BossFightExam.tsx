@@ -1,11 +1,12 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import type { QuizQuestion } from '@/content/questions/quiz/types';
 import { useServerTimeSync } from '@/hooks/useServerTimeSync';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { BossFightHUD } from './BossFightHUD';
 import { MasteryBadge } from './MasteryBadge';
 
@@ -255,7 +256,7 @@ export function BossFightExam({ subject, onComplete }: BossFightExamProps) {
 					initial={{ x: 50, opacity: 0 }}
 					animate={{ x: 0, opacity: 1 }}
 					exit={{ x: -50, opacity: 0 }}
-					transition={{ duration: 0.2 }}
+					transition={{ duration: DURATION.quick, ease: EASING.easeOut }}
 				>
 					<Card>
 						<CardContent className="space-y-4 pt-5">

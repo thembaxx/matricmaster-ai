@@ -2,11 +2,12 @@
 
 import { ArrowRight01Icon, Target01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { DURATION, EASING, STAGGER } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 
 interface WeakTopic {
@@ -75,7 +76,11 @@ export function WeakTopicHighlights({ topics }: WeakTopicHighlightsProps) {
 							key={topic.name}
 							initial={prefersReducedMotion ? {} : { opacity: 0, x: -8 }}
 							animate={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
-							transition={{ delay: idx * 0.06, duration: 0.25 }}
+							transition={{
+								delay: idx * STAGGER.SLOW,
+								duration: DURATION.quick,
+								ease: EASING.easeOut,
+							}}
 							className={cn(
 								'p-4 rounded-xl bg-gradient-to-r border border-border/50',
 								getAccuracyGradient(topic.accuracy)

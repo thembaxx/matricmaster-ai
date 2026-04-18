@@ -1,9 +1,9 @@
 'use client';
 
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m, useReducedMotion } from 'framer-motion';
+import { motion as m, useReducedMotion } from 'motion/react';
 import { LANDING_FEATURES } from '@/content/landing';
-import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { DURATION, EASING, STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 const FEATURES = LANDING_FEATURES;
 
@@ -16,7 +16,7 @@ export function FeaturesSection() {
 				initial={shouldReduceMotion ? undefined : { opacity: 0, y: 40 }}
 				whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="max-w-6xl mx-auto px-6 mb-16"
 			>
 				<div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16">

@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { SearchX } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { Button } from '@/components/ui/button';
 
 interface NoResultsProps {

@@ -1,8 +1,10 @@
 'use client';
 
-import { AnimatePresence, domAnimation, LazyMotion, m, type Variants } from 'framer-motion';
+import { domAnimation, LazyMotion } from 'framer-motion';
+import { AnimatePresence, motion as m, type Variants } from 'motion/react';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface PageTransitionProps {
 	children: ReactNode;
@@ -26,7 +28,7 @@ export function PageTransition({ children }: PageTransitionProps) {
 					animate="animate"
 					exit="exit"
 					variants={pageVariants}
-					transition={{ duration: 0.3 }}
+					transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 					className="w-full"
 				>
 					{children}

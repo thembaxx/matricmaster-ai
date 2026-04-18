@@ -1,7 +1,7 @@
 'use client';
 
 import { FluentEmoji } from '@lobehub/fluent-emoji';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Link from 'next/link';
 import type { StudyHelpCard } from './constants';
 

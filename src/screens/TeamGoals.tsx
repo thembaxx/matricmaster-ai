@@ -3,7 +3,7 @@
 import { TargetIcon, UserGroupIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { toast } from 'sonner';
 import { CreateGoalDialog } from '@/components/Gamification/TeamGoals/CreateGoalDialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

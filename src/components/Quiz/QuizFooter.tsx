@@ -2,8 +2,9 @@
 
 import { ArrowRight01Icon, Home01Icon, Idea01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { Button } from '@/components/ui/button';
+import { DURATION } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 
 interface QuizFooterProps {
@@ -47,7 +48,7 @@ export function QuizFooter({
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}
-						transition={{ duration: 0.15 }}
+						transition={{ duration: DURATION.quick }}
 						className="flex gap-3"
 					>
 						<m.button
@@ -82,7 +83,7 @@ export function QuizFooter({
 											initial={{ opacity: 0, filter: 'blur(4px)' }}
 											animate={{ opacity: 1, filter: 'blur(0px)' }}
 											exit={{ opacity: 0, filter: 'blur(4px)' }}
-											transition={{ duration: 0.15 }}
+											transition={{ duration: DURATION.quick }}
 											className="flex items-center"
 										>
 											Checking...
@@ -114,7 +115,7 @@ export function QuizFooter({
 											initial={{ opacity: 0, filter: 'blur(4px)' }}
 											animate={{ opacity: 1, filter: 'blur(0px)' }}
 											exit={{ opacity: 0, filter: 'blur(4px)' }}
-											transition={{ duration: 0.15 }}
+											transition={{ duration: DURATION.quick }}
 											className="flex items-center"
 										>
 											Check Answer
@@ -131,7 +132,7 @@ export function QuizFooter({
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}
-						transition={{ duration: 0.15 }}
+						transition={{ duration: DURATION.quick }}
 						className="flex gap-4"
 					>
 						<m.div whileTap={{ scale: 0.97 }} className="flex-1">

@@ -3,7 +3,7 @@
 import { Warning } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import * as Sentry from '@sentry/nextjs';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { Component, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 

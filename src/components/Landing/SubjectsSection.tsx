@@ -3,9 +3,9 @@
 import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { SUBJECTS_CONTENT } from '@/content';
-import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { DURATION, EASING, STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 interface SubjectsSectionProps {
 	onAuthRequired: (path: string) => void;
@@ -18,7 +18,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="mb-12"
 			>
 				<h2 className="heading-2 mb-4">

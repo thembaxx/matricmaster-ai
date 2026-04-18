@@ -2,7 +2,8 @@
 
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { domAnimation, LazyMotion } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';

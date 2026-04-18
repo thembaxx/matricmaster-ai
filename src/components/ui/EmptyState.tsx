@@ -1,6 +1,5 @@
 'use client';
 
-import { m } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import {
 	BookOpen,
@@ -15,6 +14,7 @@ import {
 	User,
 	Users,
 } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

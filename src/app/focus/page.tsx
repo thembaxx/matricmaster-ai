@@ -7,7 +7,7 @@ import {
 	Clock01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useMemo, useState, ViewTransition } from 'react';
 import { toast } from 'sonner';
@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useFocusMode, useFocusModeAuto } from '@/hooks/useFocusMode';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
 import { useSchedule } from '@/stores/useScheduleStore';
 import type { StudyTask, SubjectId } from '@/types/schedule';
@@ -209,7 +210,7 @@ function FocusPageContent() {
 					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0, y: -10 }}
-					transition={{ duration: 0.2 }}
+					transition={{ duration: DURATION.quick, ease: EASING.easeOut }}
 				>
 					{activeTab === 'timer' && (
 						<div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

@@ -2,7 +2,7 @@
 
 import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
@@ -15,7 +15,7 @@ export function HeroCTAs({ onAuthRequired }: HeroCTAsProps) {
 	const shouldReduceMotion = useReducedMotion();
 
 	return (
-		<m.div
+		<motion.div
 			initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
 			animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
 			transition={shouldReduceMotion ? undefined : { delay: 0.3 }}
@@ -39,6 +39,6 @@ export function HeroCTAs({ onAuthRequired }: HeroCTAsProps) {
 			>
 				<span className="flex items-center gap-2">See How It Works</span>
 			</Button>
-		</m.div>
+		</motion.div>
 	);
 }

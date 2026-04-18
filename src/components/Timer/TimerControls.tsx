@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { useSchedule } from '@/stores/useScheduleStore';
 

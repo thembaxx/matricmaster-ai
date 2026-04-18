@@ -2,9 +2,9 @@
 
 import { Camera01Icon, ChartIcon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { Button } from '@/components/ui/button';
-import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { DURATION, EASING, STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 const STEPS = [
 	{
@@ -36,7 +36,7 @@ export function HowItWorksSection() {
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="text-center mb-16 relative z-10"
 			>
 				<h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">

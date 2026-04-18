@@ -1,7 +1,8 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useCallback, useState } from 'react';
+import { DURATION } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 import {
 	CircleDiagram,
@@ -255,7 +256,7 @@ function ExplorablePanel({ part, onClose }: { part: ExplorablePart; onClose: () 
 			initial={{ opacity: 0, y: 10 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 10 }}
-			transition={{ duration: 0.2 }}
+			transition={{ duration: DURATION.quick }}
 			className="mt-3 rounded-2xl border border-border/30 bg-card p-4 shadow-lg"
 		>
 			<div className="flex items-center justify-between mb-2">

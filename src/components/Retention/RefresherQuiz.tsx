@@ -1,10 +1,11 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import type { QuizQuestion } from '@/content/questions/quiz/types';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { useKnowledgeDecayStore } from '@/stores/useKnowledgeDecayStore';
 
 interface RefresherQuizProps {
@@ -76,7 +77,7 @@ export function RefresherQuiz({ topic, questions, onComplete }: RefresherQuizPro
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -10 }}
-						transition={{ duration: 0.15 }}
+						transition={{ duration: DURATION.quick, ease: EASING.easeOut }}
 					>
 						<p className="text-sm font-medium leading-relaxed">{currentQuestion.question}</p>
 

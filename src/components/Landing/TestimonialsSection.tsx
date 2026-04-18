@@ -2,10 +2,10 @@
 
 import { StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Image from 'next/image';
 import { LANDING_TESTIMONIALS } from '@/content/landing';
-import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { DURATION, EASING, STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 const TESTIMONIALS = LANDING_TESTIMONIALS;
 
@@ -16,7 +16,7 @@ export function TestimonialsSection() {
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="text-center mb-16"
 			>
 				<h2 className="heading-2 mb-4">

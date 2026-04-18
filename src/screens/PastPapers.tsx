@@ -3,7 +3,7 @@
 import { Cancel01Icon, Settings02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useState, ViewTransition } from 'react';
 import { FilterPanel } from '@/components/PastPapers/FilterPanel';
 import { PastPaperCard, PastPapersEmptyState } from '@/components/PastPapers/PastPapersList';

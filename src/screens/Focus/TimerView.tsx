@@ -1,9 +1,10 @@
 import { PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useHaptics } from '@/hooks/useHaptics';
+import { DURATION } from '@/lib/animation-presets';
 import { CIRCLE_CIRCUMFERENCE, formatTime } from './constants';
 
 interface TimerViewProps {
@@ -77,7 +78,7 @@ export function TimerView({
 						strokeDasharray={`${CIRCLE_CIRCUMFERENCE}`}
 						initial={{ strokeDashoffset: `${CIRCLE_CIRCUMFERENCE}` }}
 						animate={{ strokeDashoffset: `${CIRCLE_CIRCUMFERENCE * (1 - progress / 100)}` }}
-						transition={{ duration: 0.5 }}
+						transition={{ duration: DURATION.normal }}
 					/>
 				</svg>
 				<div className="absolute inset-0 flex flex-col items-center justify-center">

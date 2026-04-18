@@ -1,7 +1,9 @@
 'use client';
 
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { domAnimation, LazyMotion } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useMemo, useRef, useState } from 'react';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface ConfettiProps {
 	active: boolean;
@@ -68,7 +70,7 @@ export function Confetti({
 					<m.div
 						className="fixed inset-0 pointer-events-none z-[9999]"
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.3 }}
+						transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 					>
 						{particles.map((particle) => (
 							<m.div

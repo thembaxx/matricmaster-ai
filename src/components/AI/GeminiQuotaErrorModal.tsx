@@ -11,7 +11,7 @@ import {
 	WifiDisconnected01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import Link from 'next/link';
 import { useCallback, useId, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useUserApiKey } from '@/hooks/use-user-api-key';
+import { DURATION, DURATION_GUIDELINES, EASING } from '@/lib/animation-presets';
 
 // Import the ErrorState type from the context to ensure consistency
 interface ErrorState {
@@ -144,14 +145,14 @@ export function GeminiQuotaErrorModal({
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
+						transition={{ duration: DURATION_GUIDELINES.exit, ease: EASING.easeIn }}
 					>
 						<DialogContent className="sm:max-w-[480px] overflow-hidden p-0 gap-0">
 							<m.div
 								initial={{ opacity: 0, scale: 0.95, y: 10 }}
 								animate={{ opacity: 1, scale: 1, y: 0 }}
 								exit={{ opacity: 0, scale: 0.95, y: 10 }}
-								transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+								transition={{ duration: DURATION.drawer, ease: EASING.easeOut }}
 							>
 								<DialogHeader className="pb-2 pt-6 px-6">
 									<m.div

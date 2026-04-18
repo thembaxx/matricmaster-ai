@@ -2,7 +2,7 @@
 
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useQuery } from '@tanstack/react-query';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { SUBJECTS, type SubjectId } from '@/content';
 import { getEnrolledSubjectsAction } from '@/lib/db/actions';

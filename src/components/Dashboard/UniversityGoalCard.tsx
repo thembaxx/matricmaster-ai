@@ -2,8 +2,8 @@
 
 import { Mortarboard01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Progress } from '@/components/ui/progress';
 import { useGoalStore } from '@/stores/useGoalStore';

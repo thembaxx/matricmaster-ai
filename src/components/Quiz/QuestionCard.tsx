@@ -2,7 +2,7 @@
 
 import { Flag02Icon, FlagIcon, Mortarboard01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { DURATION, EASING } from '@/lib/animation-presets';
@@ -45,8 +45,8 @@ const questionVariants = {
 };
 
 const questionTransition = {
-	duration: 0.35,
-	ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+	duration: DURATION.normal,
+	ease: EASING.easeOut,
 };
 
 export function QuestionCard({

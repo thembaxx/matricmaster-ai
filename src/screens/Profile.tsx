@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useId } from 'react';
 import { PageLayout } from '@/components/Layout/PageLayout';
 import { AcademicStanding } from '@/components/Profile/AcademicStanding';

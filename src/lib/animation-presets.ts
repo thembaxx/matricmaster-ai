@@ -1,12 +1,16 @@
-import type { Variants } from 'framer-motion';
+import type { Variants } from 'motion/react';
 
 // Timing constants per UI/UX guidelines: max 300ms for user-initiated
+// Updated with duration guidelines for large elements
 export const DURATION = {
 	instant: 0.1,
-	quick: 0.15,
-	normal: 0.25,
+	quick: 0.15, // Standard quick
+	normal: 0.25, // Standard enter
 	slow: 0.25,
 	slower: 0.3,
+	// Large elements (drawers, modals) - longer per principle
+	drawer: 0.35,
+	drawerSlow: 0.4,
 } as const;
 
 // Spring configs for gesture-driven motion (per guidelines)
@@ -32,21 +36,42 @@ export const PHYSICS = {
 	DEFORMATION_RANGE: { min: 0.97, max: 1.02 },
 } as const;
 
-// Easing curves per guidelines:
-// - easeOut for entrances
-// - easeIn for exits
-// - easeInOut for view transitions
-// - linear only for progress/time representation
+// Easing curves per UI principles:
+// 1. Entering elements → ease-out (decelerate to rest)
+// 2. On-screen movement → ease-in-out
+// 3. Hover/color → ease (standard)
+// 4. Exits → Faster than entrances (use accelerate)
+// 5. Large elements (drawers) → Longer duration
+// 6. Frequent (100+/day) → No animation
 export const EASING = {
 	ios: [0.33, 1, 0.68, 1],
-	decelerate: [0, 0, 0.2, 1], // easeOut - for entrances
-	accelerate: [0.4, 0, 1, 1], // easeIn - for exits
+	decelerate: [0, 0, 0.2, 1], // easeOut - for entrances (principle #1)
+	accelerate: [0.4, 0, 1, 1], // easeIn - for exits (faster than enter)
 	liquid: [0.2, 0, 0.2, 1],
 	smooth: [0.33, 1, 0.68, 1],
-	easeOut: [0.4, 0, 0.2, 1],
-	easeIn: [0.4, 0, 1, 0.6],
-	easeInOut: [0.4, 0, 0.2, 1],
+	easeOut: [0.4, 0, 0.2, 1], // entrances
+	easeIn: [0.4, 0, 1, 0.6], // exits
+	easeInOut: [0.4, 0, 0.2, 1], // movement (principle #2)
+	ease: [0.25, 0.1, 0.25, 1], // hover/color (principle #3)
 	linear: 'linear',
+} as const;
+
+// Duration guidelines:
+// - Standard: 150-300ms
+// - Large (drawers): 300-400ms (principle #5)
+// - Exits: Faster than entrances (principle #6)
+export const DURATION_GUIDELINES = {
+	// Standard durations
+	instant: 0.1,
+	quick: 0.15,
+	normal: 0.25,
+	slow: 0.3,
+	// Large elements (drawers, panels) - longer per principle #5
+	large: 0.35,
+	largeSlow: 0.4,
+	// Exit - faster than enter per principle #6
+	exit: 0.15,
+	exitQuick: 0.1,
 } as const;
 
 // Stagger delays per guidelines: under 50ms per item
@@ -203,4 +228,104 @@ export const ANIMATION_PRESETS = {
 		hidden: { opacity: 0, x: -8 },
 		visible: { opacity: 1, x: 0 },
 	},
+};
+
+// ==========================================================================
+// UI PRINCIPLE-BASED PRESETS
+// ==========================================================================
+
+// Hover/Color transitions - use standard ease (principle #3: hover/color → ease)
+export const HOVER_EASE = {
+	whileHover: { scale: PHYSICS.HOVER_SCALE },
+	whileTap: { scale: PHYSICS.ACTIVE_SCALE },
+	transition: { duration: DURATION.quick, ease: EASING.ease },
+};
+
+export const COLOR_EASE = {
+	whileHover: { opacity: 0.9 },
+	whileTap: { opacity: 0.8 },
+	transition: { duration: DURATION.quick, ease: EASING.ease },
+};
+
+// Large elements (drawers, panels) - use longer duration (principle #5)
+export const DRAWER_SLIDE: Variants = {
+	initial: { opacity: 0, x: '100%' },
+	animate: {
+		opacity: 1,
+		x: 0,
+		transition: { duration: DURATION.drawer, ease: EASING.easeOut },
+	},
+	exit: {
+		opacity: 0,
+		x: '100%',
+		transition: { duration: DURATION_GUIDELINES.exit, ease: EASING.easeIn },
+	},
+};
+
+export const DRAWER_MODAL: Variants = {
+	initial: { opacity: 0, scale: 0.95, x: '100%' },
+	animate: {
+		opacity: 1,
+		scale: 1,
+		x: 0,
+		transition: { duration: DURATION.drawer, ease: EASING.easeOut },
+	},
+	exit: {
+		opacity: 0,
+		scale: 0.95,
+		x: '100%',
+		transition: { duration: DURATION_GUIDELINES.exit, ease: EASING.easeIn },
+	},
+};
+
+// Exit animations - faster than entrance (principle #6)
+export const EXIT_FAST: Variants = {
+	initial: { opacity: 0, y: 10 },
+	animate: {
+		opacity: 1,
+		y: 0,
+		transition: { duration: DURATION.normal, ease: EASING.easeOut },
+	},
+	exit: {
+		opacity: 0,
+		y: -10,
+		transition: { duration: DURATION_GUIDELINES.exit, ease: EASING.easeIn },
+	},
+};
+
+export const EXIT_SCALE_FAST: Variants = {
+	initial: { opacity: 0, scale: 0.95 },
+	animate: {
+		opacity: 1,
+		scale: 1,
+		transition: { duration: DURATION.normal, ease: EASING.easeOut },
+	},
+	exit: {
+		opacity: 0,
+		scale: 0.95,
+		transition: { duration: DURATION_GUIDELINES.exit, ease: EASING.easeIn },
+	},
+};
+
+// Movement on screen - use ease-in-out (principle #2)
+export const MOVE_EASE_IN_OUT: Variants = {
+	initial: { opacity: 0, x: 20 },
+	animate: {
+		opacity: 1,
+		x: 0,
+		transition: { duration: DURATION.normal, ease: EASING.easeInOut },
+	},
+	exit: {
+		opacity: 0,
+		x: -20,
+		transition: { duration: DURATION.normal, ease: EASING.easeInOut },
+	},
+};
+
+// Spring for drag/interruptible gestures (principle #4)
+export const DRAG_SPRING = {
+	drag: 'x',
+	dragTransition: SPRING_CONFIG.interruptible,
+	whileDrag: { scale: PHYSICS.ACTIVE_SCALE },
+	transition: { type: 'spring', ...SPRING_CONFIG.interruptible },
 };

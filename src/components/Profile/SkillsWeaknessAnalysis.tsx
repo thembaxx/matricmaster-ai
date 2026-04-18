@@ -1,8 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { AlertCircle, Target, TrendingDown, TrendingUp } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface WeakTopic {
 	topic: string;
@@ -50,7 +51,7 @@ function SubjectPerformanceGrid({ subjects }: { subjects: SubjectPerformance[] }
 								key={subject.subject}
 								initial={{ opacity: 0, y: 10 }}
 								animate={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.3, delay: index * 0.05 }}
+								transition={{ duration: DURATION.normal, delay: index * 0.05 }}
 								className="flex items-center justify-between p-3 rounded-xl bg-background/30 border border-border/30"
 							>
 								<div className="flex flex-col">
@@ -109,7 +110,7 @@ function WeakTopicsList({ topics }: { topics: WeakTopic[] }) {
 						key={topic.topic}
 						initial={{ opacity: 0, x: -10 }}
 						animate={{ opacity: 1, x: 0 }}
-						transition={{ duration: 0.3, delay: index * 0.1 }}
+						transition={{ duration: DURATION.normal, delay: index * 0.1 }}
 						className="flex items-center justify-between p-3 rounded-xl bg-[#ef4444]/5 border border-[#ef4444]/20"
 					>
 						<div className="flex flex-col">
@@ -148,7 +149,7 @@ function StrongTopicsList({ topics }: { topics: StrongTopic[] }) {
 						key={topic.topic}
 						initial={{ opacity: 0, x: -10 }}
 						animate={{ opacity: 1, x: 0 }}
-						transition={{ duration: 0.3, delay: index * 0.1 }}
+						transition={{ duration: DURATION.normal, delay: index * 0.1 }}
 						className="flex items-center justify-between p-3 rounded-xl bg-[#22c55e]/5 border border-[#22c55e]/20"
 					>
 						<span className="body-sm font-medium text-foreground">{topic.topic.toLowerCase()}</span>
@@ -177,7 +178,7 @@ function FocusRecommendations({ weakTopics }: { weakTopics: WeakTopic[] }) {
 				<motion.div
 					initial={{ opacity: 0, scale: 0.95 }}
 					animate={{ opacity: 1, scale: 1 }}
-					transition={{ duration: 0.5 }}
+					transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 					className="p-4 rounded-xl bg-gradient-to-r from-primary-orange/10 to-primary-violet/10 border border-primary-orange/20"
 				>
 					<p className="label-xs text-label-tertiary mb-1">ai suggestion</p>

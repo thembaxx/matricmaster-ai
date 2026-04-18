@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface BossFightHUDProps {
 	bossHp: number;
@@ -62,7 +63,7 @@ export function BossFightHUD({
 									: 'linear-gradient(90deg, #ef4444, #f87171)',
 					}}
 					animate={{ width: `${hpPercentage}%` }}
-					transition={{ duration: 0.5, ease: 'easeOut' }}
+					transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				/>
 				<div className="absolute inset-0 flex items-center justify-center">
 					<span className="font-mono text-[10px] font-bold text-white drop-shadow-sm">
@@ -79,7 +80,7 @@ export function BossFightHUD({
 							animate={
 								i >= lives ? { scale: [1, 1.4, 0], opacity: [1, 1, 0] } : { scale: 1, opacity: 1 }
 							}
-							transition={{ duration: 0.3 }}
+							transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 						>
 							<HeartIcon filled={i < lives} />
 						</motion.div>

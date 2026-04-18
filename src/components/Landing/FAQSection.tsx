@@ -1,12 +1,13 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 const FAQ_ITEMS = [
 	{
@@ -46,7 +47,7 @@ export function FAQSection() {
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="text-center mb-16"
 			>
 				<h2 className="heading-2 mb-4">frequently asked questions</h2>
@@ -59,7 +60,7 @@ export function FAQSection() {
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6, delay: 0.2 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut, delay: 0.2 }}
 				className="max-w-3xl mx-auto px-4"
 			>
 				<Accordion type="single" collapsible className="w-full">

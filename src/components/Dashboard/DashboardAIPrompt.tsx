@@ -2,7 +2,7 @@
 
 import { ArrowRight02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useState } from 'react';
 import { ThinkingAnimation } from '@/components/AI/ThinkingAnimation';
 

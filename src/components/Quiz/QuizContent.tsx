@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MathInputField } from '@/components/MathKeyboard';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';

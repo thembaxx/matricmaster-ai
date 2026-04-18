@@ -1,6 +1,6 @@
 'use client';
 
-import { m, useCycle } from 'framer-motion';
+import { motion as m, useCycle } from 'motion/react';
 import { useEffect } from 'react';
 
 const ANALYZING_MESSAGES = [

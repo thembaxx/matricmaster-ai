@@ -1,7 +1,7 @@
 import { ArrowUpRight01Icon as ArrowUpRight } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';

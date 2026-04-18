@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useCallback, useState } from 'react';
 import { useAiContext } from '@/hooks/useAiContext';
 

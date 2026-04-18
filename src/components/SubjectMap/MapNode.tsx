@@ -2,8 +2,9 @@
 
 import { SquareLock01Icon, SquareUnlock01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { Handle, type NodeProps, Position } from 'reactflow';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 import type { MapNodeData } from './types';
 
@@ -36,7 +37,7 @@ export function MapNode({ data, selected }: NodeProps<MapNodeData>) {
 		<m.div
 			initial={{ opacity: 0, scale: 0.8 }}
 			animate={{ opacity: 1, scale: 1 }}
-			transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+			transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 			className={cn(
 				'px-4 py-3 rounded-2xl border-2 min-w-[140px] max-w-[200px] transition-all duration-200',
 				isLocked && 'opacity-40 grayscale',

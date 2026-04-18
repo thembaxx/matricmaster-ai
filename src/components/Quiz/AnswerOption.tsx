@@ -2,7 +2,7 @@
 
 import { CancelCircleIcon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { m, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 

@@ -2,7 +2,7 @@
 
 import { CheckmarkCircle02Icon, CircleIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { cn } from '@/lib/utils';
 
 type IconSvgElement = readonly (readonly [string, { readonly [key: string]: string | number }])[];

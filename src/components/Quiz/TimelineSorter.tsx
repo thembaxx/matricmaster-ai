@@ -10,8 +10,9 @@ import {
 } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useCallback } from 'react';
+import { DURATION } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 
 export interface TimelineEvent {
@@ -59,7 +60,7 @@ function SortableItem({
 			style={style}
 			initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
-			transition={{ delay: index * 0.05, duration: 0.25 }}
+			transition={{ delay: index * 0.05, duration: DURATION.normal }}
 			className={cn(
 				'flex items-center gap-3 px-4 py-3 rounded-xl border transition-all',
 				isDragging && 'shadow-xl ring-2 ring-primary/30',

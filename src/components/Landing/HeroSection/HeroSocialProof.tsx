@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion } from 'motion/react';
 import Image from 'next/image';
 
 const AVATARS = [
@@ -13,7 +13,7 @@ const AVATARS = [
 
 export function HeroSocialProof() {
 	return (
-		<m.div
+		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ delay: 0.5 }}
@@ -40,6 +40,6 @@ export function HeroSocialProof() {
 				<p className="body-sm font-semibold font-numeric tabular-nums">Join 50,000+ students</p>
 				<p className="body-xs text-muted-foreground">who've already passed</p>
 			</div>
-		</m.div>
+		</motion.div>
 	);
 }

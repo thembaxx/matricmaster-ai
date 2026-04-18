@@ -2,8 +2,9 @@
 
 import { StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m, useAnimation } from 'framer-motion';
+import { AnimatePresence, m, useAnimation } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
+import { DURATION } from '@/lib/animation-presets';
 
 interface LevelUpAnimationProps {
 	isVisible: boolean;
@@ -56,7 +57,10 @@ export function LevelUpAnimation({
 							transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
 							className="w-32 h-32 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mx-auto mb-4"
 						>
-							<m.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 0.5, repeat: 2 }}>
+							<m.div
+								animate={{ scale: [1, 1.2, 1] }}
+								transition={{ duration: DURATION.normal, repeat: 2 }}
+							>
 								<HugeiconsIcon icon={StarIcon} className="w-16 h-16 text-white" />
 							</m.div>
 						</m.div>

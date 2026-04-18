@@ -10,7 +10,7 @@ import {
 	useSensors,
 } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
 import { cn } from '@/lib/utils';

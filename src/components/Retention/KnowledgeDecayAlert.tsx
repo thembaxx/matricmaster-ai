@@ -1,8 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import type { DecayAlert } from '@/stores/useKnowledgeDecayStore';
 
 interface KnowledgeDecayAlertProps {
@@ -25,7 +26,7 @@ export function KnowledgeDecayAlert({
 					key={alert.topic}
 					initial={{ opacity: 0, x: -20 }}
 					animate={{ opacity: 1, x: 0 }}
-					transition={{ duration: 0.3 }}
+					transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				>
 					<Card className="border-amber-500/30 bg-amber-500/5">
 						<CardContent className="flex items-center justify-between gap-4 pt-5">

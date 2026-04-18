@@ -1,4 +1,4 @@
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { FocusAreasWidget } from '@/components/Dashboard/FocusAreasWidget';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
 import { TaskSection } from '@/components/Dashboard/TaskSectionV2';

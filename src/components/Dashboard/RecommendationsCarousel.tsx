@@ -8,7 +8,7 @@ import {
 	Target02Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Link from 'next/link';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';

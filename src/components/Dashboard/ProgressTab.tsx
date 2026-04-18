@@ -1,4 +1,4 @@
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import dynamic from 'next/dynamic';
 import { GrowthInsights } from '@/components/Dashboard/GrowthInsights';
 import { TipOfTheDay } from '@/components/Dashboard/TipOfTheDay';
