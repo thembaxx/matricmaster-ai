@@ -114,7 +114,7 @@ export async function PUT(request: NextRequest) {
 
 		const result = await updateStudyPlanAction(planId, session.user.id, {
 			title,
-			targetExamDate: parsedTargetExamDate,
+			targetExamDate: parsedTargetExamDate ?? undefined,
 			focusAreas,
 			weeklyGoals,
 			isActive,

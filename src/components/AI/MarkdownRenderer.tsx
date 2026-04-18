@@ -133,7 +133,7 @@ export function MarkdownRenderer({ content, className, subject }: MarkdownRender
 			{parts.map((part, index) => {
 				const diagramMatch = part.match(/\[DIAGRAM:(\w+(?:-\w+)*)\]/);
 				if (diagramMatch) {
-					const type = diagramMatch[1] as string;
+					const type = diagramMatch[1] as 'cell-structure' | 'dna-structure' | 'projectile-motion' | 'force-vector' | 'phase-change' | 'wave-motion' | 'circuit-analysis' | 'momentum-conservation';
 					return (
 						<div key={`markdown-render-diagram-${part}-${index}`} className="my-8 not-prose">
 							<InteractiveDiagram type={type} />

@@ -60,7 +60,10 @@ export function SubjectCardItem({ subject, onClick }: SubjectCardItemProps) {
 								{subject.progress}%
 							</span>
 						</div>
-						<Progress value={subject.progress} className="h-1.5 bg-secondary" />
+						<Progress
+							value={subject.progress}
+							className={cn('h-1.5', subject.progressBar || 'bg-secondary')}
+						/>
 					</div>
 				</div>
 

@@ -1,5 +1,5 @@
-import { logger } from './logger';
 import { isQuotaError as checkQuotaError } from './quota-error';
+import { logger } from '../logger';
 
 export type AIProvider = 'google' | 'groq' | 'cohere' | 'openrouter' | 'mistral';
 

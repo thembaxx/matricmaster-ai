@@ -22,6 +22,7 @@ interface Subject {
 	progress: number;
 	color: string;
 	bgColor: string;
+	progressBar?: string;
 	emoji: string;
 	topics: number;
 	description: string;
@@ -34,6 +35,7 @@ const subjects: Subject[] = [
 		progress: 78,
 		color: 'text-subject-math',
 		bgColor: 'bg-subject-math-soft',
+		progressBar: 'progress-bar-math',
 		emoji: '🧮',
 		topics: 12,
 		description: 'Calculus, Trigonometry, and Financial Maths.',
@@ -44,6 +46,7 @@ const subjects: Subject[] = [
 		progress: 62,
 		color: 'text-subject-physics',
 		bgColor: 'bg-subject-physics-soft',
+		progressBar: 'progress-bar-physics',
 		emoji: '⚛️',
 		topics: 15,
 		description: 'Newtonian Mechanics, Electricity, and Chemistry.',
@@ -54,6 +57,7 @@ const subjects: Subject[] = [
 		progress: 85,
 		color: 'text-subject-life',
 		bgColor: 'bg-subject-life-soft',
+		progressBar: 'progress-bar-life',
 		emoji: '🧬',
 		topics: 10,
 		description: 'DNA, Genetics, and Human Evolution.',
@@ -64,6 +68,7 @@ const subjects: Subject[] = [
 		progress: 45,
 		color: 'text-subject-accounting',
 		bgColor: 'bg-subject-accounting-soft',
+		progressBar: 'progress-bar-accounting',
 		emoji: '💰',
 		topics: 8,
 		description: 'Financial Statements and Cost Accounting.',
@@ -122,7 +127,10 @@ export function SubjectProgress() {
 									</span>
 									<span className="text-foreground">{subject.progress}%</span>
 								</div>
-								<Progress value={subject.progress} className="h-2 bg-secondary" />
+								<Progress
+									value={subject.progress}
+									className={cn('h-2', subject.progressBar || 'bg-secondary')}
+								/>
 							</div>
 						</div>
 					</div>
