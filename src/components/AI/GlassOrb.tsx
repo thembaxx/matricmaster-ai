@@ -2,8 +2,8 @@
 
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
 import { Send, X } from 'lucide-react';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';

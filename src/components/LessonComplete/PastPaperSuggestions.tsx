@@ -3,7 +3,7 @@
 import { BookOpen01Icon as BookOpen } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { usePastPapers } from '@/hooks/usePastPapers';

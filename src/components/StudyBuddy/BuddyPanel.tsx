@@ -3,7 +3,7 @@
 import { ArrowRightIcon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import {

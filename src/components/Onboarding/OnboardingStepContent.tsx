@@ -1,4 +1,4 @@
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Image from 'next/image';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Card } from '@/components/ui/card';

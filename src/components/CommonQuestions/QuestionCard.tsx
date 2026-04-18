@@ -1,7 +1,7 @@
 'use client';
 
 import { FluentEmoji } from '@lobehub/fluent-emoji';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { Card } from '@/components/ui/card';
 import type { CommonQuestion } from '@/content/common-questions';
 import { cn } from '@/lib/utils';

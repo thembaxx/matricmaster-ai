@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -9,6 +9,7 @@ import { SchedulePathModal } from '@/components/StudyPath/SchedulePathModal';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import studyPathsData from '@/content/study-paths.json';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import type { PathScheduleResult, StudyStep } from '@/services/studyPathSchedulerService';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
 

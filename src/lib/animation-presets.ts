@@ -1,4 +1,4 @@
-import type { Variants } from 'framer-motion';
+import type { Variants } from 'motion/react';
 
 // Timing constants per UI/UX guidelines: max 300ms for user-initiated
 // Updated with duration guidelines for large elements

@@ -2,10 +2,10 @@
 
 import { StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Image from 'next/image';
 import { LANDING_TESTIMONIALS } from '@/content/landing';
-import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { DURATION, EASING, STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 const TESTIMONIALS = LANDING_TESTIMONIALS;
 

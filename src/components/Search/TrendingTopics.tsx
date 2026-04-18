@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { STAGGER_ITEM } from '@/lib/animation-presets';

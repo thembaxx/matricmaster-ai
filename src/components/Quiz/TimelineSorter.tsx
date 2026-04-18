@@ -10,7 +10,7 @@ import {
 } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useCallback } from 'react';
 import { DURATION } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';

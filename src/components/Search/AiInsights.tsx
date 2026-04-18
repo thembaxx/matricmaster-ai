@@ -3,7 +3,7 @@
 import { AlertCircleIcon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import Link from 'next/link';
 import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';

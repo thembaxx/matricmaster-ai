@@ -1,7 +1,7 @@
 'use client';
 
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m, useReducedMotion } from 'framer-motion';
+import { motion as m, useReducedMotion } from 'motion/react';
 import { LANDING_FEATURES } from '@/content/landing';
 import { DURATION, EASING, STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 

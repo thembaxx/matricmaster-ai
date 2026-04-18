@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { Star, Trophy, Zap } from 'lucide-react';
+import { motion as m } from 'motion/react';
 
 interface GamificationRewardsProps {
 	userStats?: {

@@ -2,7 +2,7 @@
 
 import { StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m, useAnimation } from 'framer-motion';
+import { AnimatePresence, m } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { DURATION } from '@/lib/animation-presets';
 

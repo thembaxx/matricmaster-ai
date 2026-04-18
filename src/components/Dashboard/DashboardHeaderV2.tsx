@@ -2,7 +2,7 @@
 
 import { Calendar01Icon, Camera01Icon, Mortarboard01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Link from 'next/link';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
 import { getLevelInfo } from '@/lib/level-utils';

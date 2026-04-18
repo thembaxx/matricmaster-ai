@@ -7,7 +7,7 @@ import {
 	Target02Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

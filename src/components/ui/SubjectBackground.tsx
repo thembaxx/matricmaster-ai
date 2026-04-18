@@ -1,6 +1,7 @@
 'use client';
 
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { domAnimation, LazyMotion } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { usePathname } from 'next/navigation';
 import { createContext, type ReactNode, useContext, useMemo, useState } from 'react';
 import { getSubjectGradient } from '@/content';

@@ -1,7 +1,7 @@
 'use client';
 
 import { FluentEmoji } from '@lobehub/fluent-emoji';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

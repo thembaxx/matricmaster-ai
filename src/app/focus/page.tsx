@@ -7,7 +7,7 @@ import {
 	Clock01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useMemo, useState, ViewTransition } from 'react';
 import { toast } from 'sonner';

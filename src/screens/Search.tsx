@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AiInsights } from '@/components/Search/AiInsights';

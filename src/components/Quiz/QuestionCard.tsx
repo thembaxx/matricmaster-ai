@@ -2,7 +2,7 @@
 
 import { Flag02Icon, FlagIcon, Mortarboard01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { DURATION, EASING } from '@/lib/animation-presets';

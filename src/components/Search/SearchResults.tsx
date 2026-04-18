@@ -2,7 +2,7 @@
 
 import { ArrowRight01Icon, File01Icon, Search01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';

@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { TaskBlock } from '@/components/Schedule/TaskBlock';
 import { ViewToggle } from '@/components/Schedule/ViewToggle';
 import { ProgressRing } from '@/components/Timer/ProgressRing';

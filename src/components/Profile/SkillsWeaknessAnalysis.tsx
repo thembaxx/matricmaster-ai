@@ -1,7 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { AlertCircle, Target, TrendingDown, TrendingUp } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DURATION, EASING } from '@/lib/animation-presets';
 

@@ -4,7 +4,7 @@ import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useQuery } from '@tanstack/react-query';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';

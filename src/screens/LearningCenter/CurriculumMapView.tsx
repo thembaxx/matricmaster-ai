@@ -1,6 +1,5 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { AIRecommendations } from '@/components/Curriculum/AIRecommendations';

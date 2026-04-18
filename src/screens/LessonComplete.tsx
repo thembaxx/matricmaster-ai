@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useReducer } from 'react';
 import { AchievementUnlocked } from '@/components/LessonComplete/AchievementUnlocked';

@@ -1,4 +1,4 @@
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { SafeImage } from '../SafeImage';

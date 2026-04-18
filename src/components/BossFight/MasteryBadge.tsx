@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
+import { DURATION } from '@/lib/animation-presets';
 
 type MasteryLevel = 'bronze' | 'silver' | 'gold';
 

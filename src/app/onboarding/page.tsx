@@ -1,6 +1,5 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AccountScreen, PaywallScreen } from '@/components/Onboarding/Conversion';

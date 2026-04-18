@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import type { RecentSessionWithContext } from '@/lib/db/actions';

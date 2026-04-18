@@ -2,7 +2,7 @@
 
 import { LockIcon, StarIcon, Tick01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { memo } from 'react';
 import { ACHIEVEMENTS } from '@/content';
 import { DURATION, EASING } from '@/lib/animation-presets';

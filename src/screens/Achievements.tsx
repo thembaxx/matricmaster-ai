@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { startTransition, useState, ViewTransition } from 'react';
 import {
 	BadgesGridSection,
@@ -10,6 +10,7 @@ import {
 } from '@/components/Achievements';
 import { AchievementsSkeleton } from '@/components/AchievementsSkeleton';
 import { Button } from '@/components/ui/button';
+import { DURATION } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
 
 export default function Achievements() {

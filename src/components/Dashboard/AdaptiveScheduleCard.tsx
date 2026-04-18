@@ -2,7 +2,7 @@
 
 import { Calendar01Icon, Cancel01Icon, CheckmarkCircle01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';

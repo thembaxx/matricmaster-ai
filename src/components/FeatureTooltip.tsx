@@ -2,7 +2,7 @@
 
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFeatureTooltip } from '@/hooks/use-feature-tooltip';

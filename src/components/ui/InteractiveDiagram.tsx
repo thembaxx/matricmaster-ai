@@ -1,4 +1,4 @@
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useId, useState } from 'react';
 import { CircuitDiagram } from '@/components/Science/CircuitDiagram';
 import { Input } from '@/components/ui/input';

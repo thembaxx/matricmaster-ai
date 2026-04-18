@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import type { ReactNode } from 'react';
 import { DURATION, EASING } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';

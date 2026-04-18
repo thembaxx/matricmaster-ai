@@ -2,7 +2,7 @@
 
 import { SquareLock01Icon, SquareUnlock01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { Handle, type NodeProps, Position } from 'reactflow';
 import { DURATION, EASING } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';

@@ -2,7 +2,7 @@
 
 import { CameraIcon, ImageIcon, PlayIcon, StopIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';

@@ -1,6 +1,6 @@
 'use client';
 
-import { m, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'motion/react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { getPageTransition, SPRING_CONFIG, useReducedMotion } from '@/hooks/use-reduced-motion';
@@ -79,7 +79,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
 			share={{ 'nav-forward': 'vt-morph', 'nav-back': 'vt-morph', default: 'vt-morph' }}
 			default="none"
 		>
-			<m.div
+			<motion.div
 				key={pathname}
 				initial="initial"
 				animate="animate"
@@ -95,7 +95,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
 				className="h-full w-full grow flex flex-col"
 			>
 				{children}
-			</m.div>
+			</motion.div>
 		</ViewTransition>
 	);
 }

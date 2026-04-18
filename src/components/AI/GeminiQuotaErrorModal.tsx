@@ -11,7 +11,7 @@ import {
 	WifiDisconnected01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import Link from 'next/link';
 import { useCallback, useId, useState } from 'react';
 import { Button } from '@/components/ui/button';

@@ -1,7 +1,7 @@
 'use client';
 
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';

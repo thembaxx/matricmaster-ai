@@ -2,7 +2,7 @@
 
 import { Tick01Icon as Check } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { SignUpFooter } from '@/components/auth/SignUpFooter';
 import { SignUpHeader } from '@/components/auth/SignUpHeader';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';

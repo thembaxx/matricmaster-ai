@@ -1,6 +1,6 @@
 'use client';
 
-import { m, useSpring, useTransform } from 'framer-motion';
+import { m, useSpring, useTransform } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DURATION, EASING } from '@/lib/animation-presets';

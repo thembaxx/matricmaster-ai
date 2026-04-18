@@ -1,7 +1,9 @@
 'use client';
 
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { domAnimation, LazyMotion } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useMemo, useRef, useState } from 'react';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface ConfettiProps {
 	active: boolean;

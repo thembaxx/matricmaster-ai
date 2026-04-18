@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { RefreshCwIcon, SparklesIcon } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { useCallback, useEffect, useState } from 'react';
 import {
 	AccuracyTrend,

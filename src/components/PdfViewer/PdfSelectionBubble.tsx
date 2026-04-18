@@ -2,7 +2,7 @@
 
 import { Cancel01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { HIGHLIGHT_COLORS } from '@/hooks/usePdfViewer';
 

@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { FlameIcon } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';

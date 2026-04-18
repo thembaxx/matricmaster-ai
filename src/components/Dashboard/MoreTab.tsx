@@ -1,4 +1,4 @@
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import dynamic from 'next/dynamic';
 import { RecommendedSection } from '@/components/Dashboard/RecommendedSection';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';

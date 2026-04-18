@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { Award, Target } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { DURATION } from '@/lib/animation-presets';

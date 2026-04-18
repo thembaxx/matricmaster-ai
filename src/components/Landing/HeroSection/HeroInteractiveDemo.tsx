@@ -7,7 +7,7 @@ import {
 	CheckmarkSquare01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m, useReducedMotion } from 'framer-motion';
+import { m } from 'motion/react';
 import { useEffect, useState } from 'react';
 
 const DEMO_STEPS = [

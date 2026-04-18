@@ -2,7 +2,6 @@
 
 import { ArrowLeft01Icon, BookOpen01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';

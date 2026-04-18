@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { ArrowRight, MapIcon, SparklesIcon, TargetIcon, TrendingUp } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';

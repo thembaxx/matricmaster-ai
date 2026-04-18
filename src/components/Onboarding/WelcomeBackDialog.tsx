@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useWelcomeBack } from '@/stores/useOnboardingStore';

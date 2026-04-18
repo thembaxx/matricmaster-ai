@@ -3,7 +3,7 @@
 import { CheckmarkCircle02Icon, Target01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { memo, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';

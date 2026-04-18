@@ -1,4 +1,4 @@
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import Link from 'next/link';
 import { appConfig } from '@/app.config';
 

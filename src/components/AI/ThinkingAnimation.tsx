@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 
 interface ThinkingAnimationProps {
 	className?: string;

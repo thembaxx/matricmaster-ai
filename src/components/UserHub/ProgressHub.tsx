@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import type { UnifiedStats } from '@/actions/get-unified-user-stats';
 import { Button } from '@/components/ui/button';

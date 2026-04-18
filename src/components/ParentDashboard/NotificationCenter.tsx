@@ -10,7 +10,7 @@ import {
 	StarIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion as m } from 'motion/react';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import type { ParentNotification } from '@/actions/parent-notifications';

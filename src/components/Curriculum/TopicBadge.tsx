@@ -1,7 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { Flame, TrendingUpIcon } from 'lucide-react';
+import { motion as m } from 'motion/react';
 import { Badge } from '@/components/ui/badge';
 import { DURATION, EASING } from '@/lib/animation-presets';
 

@@ -2,7 +2,7 @@
 
 import { AtomIcon, BookOpen01Icon, CalculatorIcon, FireIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { motion as m } from 'motion/react';
 import type React from 'react';
 import { Card } from '@/components/ui/card';
 import type { StudyTask } from './TaskCardV2';
