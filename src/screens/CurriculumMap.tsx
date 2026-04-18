@@ -2,6 +2,7 @@
 
 import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { AIRecommendations } from '@/components/Curriculum/AIRecommendations';
