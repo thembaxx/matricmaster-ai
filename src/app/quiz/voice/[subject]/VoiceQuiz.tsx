@@ -134,7 +134,9 @@ export default function VoiceQuiz(_props: VoiceQuizProps) {
 					.join('')
 					.toLowerCase();
 
-				console.log('Heard:', transcript);
+				if (process.env.NODE_ENV === 'development') {
+					console.log('[VoiceQuiz] Heard:', transcript);
+				}
 
 				if (transcript.includes('next')) {
 					cmdHandler('next');

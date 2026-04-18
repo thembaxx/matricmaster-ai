@@ -86,7 +86,6 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 			if (response.ok) {
 				const data = await response.json();
 				if (data.flashcards && data.flashcards.length > 0) {
-					console.log('Extracted flashcards:', data.flashcards);
 					setExtractedFlashcards(
 						data.flashcards.map((card: { front: string; back: string }, i: number) => ({
 							id: `extracted-${Date.now()}-${i}`,

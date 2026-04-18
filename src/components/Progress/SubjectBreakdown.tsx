@@ -28,6 +28,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
 interface SubjectBreakdownProps {
 	topicMastery: Array<{
@@ -207,6 +208,20 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 		return 'destructive';
 	};
 
+	const getSubjectProgressBarClass = (subjectName: string): string => {
+		const normalized = subjectName.toLowerCase();
+		if (normalized.includes('math')) return 'progress-bar-math';
+		if (normalized.includes('physics') || normalized.includes('physical'))
+			return 'progress-bar-physics';
+		if (normalized.includes('life') || normalized.includes('biology')) return 'progress-bar-life';
+		if (normalized.includes('chemistry')) return 'progress-bar-chemistry';
+		if (normalized.includes('accounting')) return 'progress-bar-accounting';
+		if (normalized.includes('english')) return 'progress-bar-english';
+		if (normalized.includes('geography')) return 'progress-bar-geography';
+		if (normalized.includes('history')) return 'progress-bar-history';
+		return '';
+	};
+
 	return (
 		<div className="flex flex-col gap-6">
 			{/* Subject Overview Cards */}
@@ -216,7 +231,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 						key={subject.subject}
 						className={`cursor-pointer transition-all hover:shadow-md ${
 							selectedSubject === subject.subject ? 'ring-2 ring-primary' : ''
-						}`}
+						} border-l-4 ${getSubjectProgressBarClass(subject.subject)}`}
 						onClick={() =>
 							setSelectedSubject(selectedSubject === subject.subject ? null : subject.subject)
 						}
@@ -234,7 +249,10 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 									<span>Average Mastery</span>
 									<span className="font-medium">{subject.avgMastery.toFixed(1)}%</span>
 								</div>
-								<Progress value={subject.avgMastery} className="h-2" />
+								<Progress
+									value={subject.avgMastery}
+									className={cn('h-2', getSubjectProgressBarClass(subject.subject))}
+								/>
 							</div>
 
 							<div className="flex justify-between text-sm">

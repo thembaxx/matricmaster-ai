@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAuth } from '@/lib/auth';
+import { getAuth, type SessionUser } from '@/lib/auth';
 import { detectInactiveUsers, executeReEngagementCampaign } from '@/services/re-engagement-service';
 
 /**
@@ -14,13 +14,13 @@ export async function POST(_request: NextRequest) {
 			headers: await headers(),
 		});
 
-		if (!session) {
+		if (!session?.user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		// Check admin role
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		if ((session.user as any).role !== 'admin' && (session.user as any).role !== 'moderator') {
+		// Check admin/moderator role
+		const user = session.user as SessionUser;
+		if (user.role !== 'admin' && user.role !== 'moderator') {
 			return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 		}
 

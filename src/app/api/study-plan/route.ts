@@ -99,11 +99,11 @@ export async function PUT(request: NextRequest) {
 		const { title, targetExamDate, focusAreas, weeklyGoals, isActive } = body;
 
 		// Validate and parse targetExamDate if provided
-		let parsedTargetExamDate: Date | undefined;
+		let parsedTargetExamDate: Date | null | undefined;
 		if (targetExamDate !== undefined && targetExamDate !== null) {
 			// If it's explicitly null, keep it as null so it can be cleared
 			if (targetExamDate === null) {
-				parsedTargetExamDate = null as any;
+				parsedTargetExamDate = null;
 			} else {
 				parsedTargetExamDate = new Date(targetExamDate);
 				if (Number.isNaN(parsedTargetExamDate.getTime())) {
@@ -114,7 +114,7 @@ export async function PUT(request: NextRequest) {
 
 		const result = await updateStudyPlanAction(planId, session.user.id, {
 			title,
-			targetExamDate: parsedTargetExamDate,
+			targetExamDate: parsedTargetExamDate ?? undefined,
 			focusAreas,
 			weeklyGoals,
 			isActive,

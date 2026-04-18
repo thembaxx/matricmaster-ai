@@ -548,6 +548,87 @@
     font-variant-numeric: slashed-zero;
     font-feature-settings: 'zero' 1;
   }
+
+  /* === SUBJECT ACCENT UTILITIES === */
+  
+  /* Left border accent - for cards and sections */
+  .border-l-subject-math { border-left: 3px solid var(--subject-math); }
+  .border-l-subject-physics { border-left: 3px solid var(--subject-physics); }
+  .border-l-subject-life { border-left: 3px solid var(--subject-life); }
+  .border-l-subject-chemistry { border-left: 3px solid var(--subject-chemistry); }
+  .border-l-subject-accounting { border-left: 3px solid var(--subject-accounting); }
+  .border-l-subject-english { border-left: 3px solid var(--subject-english); }
+  .border-l-subject-geography { border-left: 3px solid var(--subject-geography); }
+  .border-l-subject-history { border-left: 3px solid var(--subject-history); }
+  
+  /* Top border accent */
+  .border-t-subject-math { border-top: 3px solid var(--subject-math); }
+  .border-t-subject-physics { border-top: 3px solid var(--subject-physics); }
+  .border-t-subject-life { border-top: 3px solid var(--subject-life); }
+  .border-t-subject-chemistry { border-top: 3px solid var(--subject-chemistry); }
+  .border-t-subject-accounting { border-top: 3px solid var(--subject-accounting); }
+  .border-t-subject-english { border-top: 3px solid var(--subject-english); }
+  .border-t-subject-geography { border-top: 3px solid var(--subject-geography); }
+  .border-t-subject-history { border-top: 3px solid var(--subject-history); }
+
+  /* Subject background colors - use as regular classes */
+  .bg-subject-math-soft { background-color: var(--subject-math-soft); }
+  .bg-subject-physics-soft { background-color: var(--subject-physics-soft); }
+  .bg-subject-life-soft { background-color: var(--subject-life-soft); }
+  .bg-subject-chemistry-soft { background-color: var(--subject-chemistry-soft); }
+  .bg-subject-accounting-soft { background-color: var(--subject-accounting-soft); }
+  .bg-subject-english-soft { background-color: var(--subject-english-soft); }
+  .bg-subject-geography-soft { background-color: var(--subject-geography-soft); }
+  .bg-subject-history-soft { background-color: var(--subject-history-soft); }
+
+  /* Subject text colors */
+  .text-subject-math { color: var(--subject-math); }
+  .text-subject-physics { color: var(--subject-physics); }
+  .text-subject-life { color: var(--subject-life); }
+  .text-subject-chemistry { color: var(--subject-chemistry); }
+  .text-subject-accounting { color: var(--subject-accounting); }
+  .text-subject-english { color: var(--subject-english); }
+  .text-subject-geography { color: var(--subject-geography); }
+  .text-subject-history { color: var(--subject-history); }
+
+  /* === PROGRESS BAR GRADIENTS === */
+  
+  /* Subject progress bars */
+  .progress-bar-math { 
+    background: linear-gradient(90deg, var(--subject-math), oklch(0.70 0.12 75)); 
+  }
+  .progress-bar-physics { 
+    background: linear-gradient(90deg, var(--subject-physics), oklch(0.55 0.12 230)); 
+  }
+  .progress-bar-life { 
+    background: linear-gradient(90deg, var(--subject-life), oklch(0.50 0.10 160)); 
+  }
+  .progress-bar-chemistry { 
+    background: linear-gradient(90deg, var(--subject-chemistry), oklch(0.52 0.12 175)); 
+  }
+  .progress-bar-accounting { 
+    background: linear-gradient(90deg, var(--subject-accounting), oklch(0.58 0.12 330)); 
+  }
+  .progress-bar-english { 
+    background: linear-gradient(90deg, var(--subject-english), oklch(0.55 0.12 265)); 
+  }
+  .progress-bar-geography { 
+    background: linear-gradient(90deg, var(--subject-geography), oklch(0.58 0.12 185)); 
+  }
+  .progress-bar-history { 
+    background: linear-gradient(90deg, var(--subject-history), oklch(0.48 0.12 35)); 
+  }
+
+  /* === NAVIGATION HOVER STATES === */
+  
+  /* Primary navigation item hover */
+  .nav-item-hover {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-item-hover:hover {
+    background-color: var(--accent);
+    border-left-color: var(--primary);
+  }
   
   /* Prose styling */
   .prose {

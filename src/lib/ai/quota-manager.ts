@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import { isQuotaError as checkQuotaError } from './quota-error';
 
 export type AIProvider = 'google' | 'groq' | 'cohere' | 'openrouter' | 'mistral';
@@ -115,8 +116,8 @@ class AIQuotaManager {
 			await this.markAsExhausted(currentProvider.provider);
 			const nextProvider = await this.getActiveProvider().catch(() => null);
 			if (nextProvider) {
-				console.log(
-					`Switching from ${currentProvider.provider} to ${nextProvider.provider} due to quota`
+				logger.info(
+					`[QuotaManager] Switching from ${currentProvider.provider} to ${nextProvider.provider} due to quota`
 				);
 				return nextProvider.provider;
 			}
@@ -146,7 +147,7 @@ class AIQuotaManager {
 					if (onQuotaError) {
 						const nextProvider = await onQuotaError(currentProvider.provider, lastError);
 						if (nextProvider) {
-							console.log(`Fallback triggered: switching to ${nextProvider}`);
+							logger.info(`[QuotaManager] Fallback triggered: switching to ${nextProvider}`);
 							continue;
 						}
 					}
