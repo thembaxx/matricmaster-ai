@@ -111,26 +111,26 @@ export function QuestionCard({
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.1 }}
 		>
-			<Card className="shadow-lg border-border/50 p-8 sm:p-10">
-				<div className="mb-8">
-					<div className="flex items-center justify-between gap-2 mb-4">
+			<Card className="shadow-sm border-border/30 p-6 sm:p-8 rounded-3xl">
+				<div className="mb-6">
+					<div className="flex items-center justify-between gap-2 mb-5">
 						<div className="flex items-center gap-2">
-							<div className="p-1.5 bg-tiimo-lavender/10 rounded-lg">
-								<HugeiconsIcon icon={Mortarboard01Icon} className="w-4 h-4 text-tiimo-lavender" />
+							<div className="w-8 h-8 rounded-xl bg-primary/8 flex items-center justify-center">
+								<HugeiconsIcon icon={Mortarboard01Icon} className="w-4 h-4 text-primary" />
 							</div>
-							<span className="text-[10px] font-medium text-tiimo-lavender">Practice problem</span>
+							<span className="text-xs font-medium text-primary/70">question {questionKey}</span>
 						</div>
 						{onToggleFlag && (
 							<button
 								type="button"
 								onClick={onToggleFlag}
-								className="p-2 rounded-full hover:bg-muted/50 transition-colors"
+								className="p-2 rounded-full hover:bg-muted/40 transition-colors"
 								aria-label={isFlagged ? 'Unflag question' : 'Flag question for review'}
 							>
 								<HugeiconsIcon
 									icon={isFlagged ? Flag02Icon : FlagIcon}
-									className={`w-5 h-5 transition-colors ${
-										isFlagged ? 'text-brand-orange' : 'text-muted-foreground/50'
+									className={`w-4 h-4 transition-colors ${
+										isFlagged ? 'text-amber-500' : 'text-muted-foreground/40'
 									}`}
 								/>
 							</button>
@@ -145,14 +145,14 @@ export function QuestionCard({
 							animate="animate"
 							exit="exit"
 							transition={questionTransition}
-							className="text-xl font-question leading-tight text-foreground"
+							className="text-lg sm:text-xl font-question leading-relaxed text-foreground"
 						>
 							{question}
 						</m.h2>
 					</AnimatePresence>
 				</div>
 
-				{diagram && <InteractiveDiagram type={diagram} className="mb-10" />}
+				{diagram && <InteractiveDiagram type={diagram} className="mb-8" />}
 
 				<AnimatePresence mode="wait" initial={false}>
 					<m.div
@@ -165,7 +165,7 @@ export function QuestionCard({
 						<div
 							role="radiogroup"
 							aria-label="answer options"
-							className="grid grid-cols-1 gap-3"
+							className="grid grid-cols-1 gap-2.5"
 							onKeyDown={handleKeyDown}
 						>
 							{options.map((option, index) => {
@@ -200,7 +200,7 @@ export function QuestionCard({
 				</AnimatePresence>
 
 				{!isChecked && (
-					<div className="mt-4">
+					<div className="mt-5">
 						<ConfidenceSelector
 							value={confidenceLevel}
 							onChange={onSetConfidence}

@@ -162,16 +162,28 @@ async function createAuth(): Promise<AuthInstance> {
 	// If no PostgreSQL adapter, try SQLite
 	if (!adapter) {
 		try {
-			// Ensure SQLite is connected first
-			await sqliteManager.connect();
+			// Ensure SQLite is connected first (force connection)
+			const sqliteConnected = await sqliteManager.connect();
+			if (!sqliteConnected) {
+				throw new Error('Failed to connect to SQLite database');
+			}
 			adapter = await getSQLiteAuthAdapter();
+			if (!adapter) {
+				throw new Error('Failed to get SQLite adapter');
+			}
 			if (!isBuildTime) {
-				log.warn('Using SQLite fallback - Better Auth data will be stored locally');
+				log.info(
+					'Using SQLite fallback for authentication - Better Auth data will be stored locally'
+				);
 			}
 		} catch (error) {
 			if (!isBuildTime) {
-				log.warn('Failed to get SQLite adapter - Better Auth will not persist sessions', { error });
+				log.error('Failed to get SQLite adapter - Better Auth will not function', { error });
 			}
+			// Do NOT proceed without an adapter - this is critical for sign-in
+			throw new Error(
+				'No database adapter available. Please ensure SQLite or PostgreSQL is configured.'
+			);
 		}
 	}
 
@@ -460,11 +472,13 @@ export async function getAuth(): Promise<AuthInstance> {
 		// This ensures the database adapter is properly passed to better-auth
 		try {
 			await dbManager.initialize();
+			log.debug('Database initialized for auth');
 		} catch (err) {
 			log.error('Failed to initialize database for auth', { error: err });
 		}
 
 		if (!authInstance) {
+			log.debug('Creating auth instance after database init...');
 			authInstance = await createAuth();
 		}
 		return authInstance;
