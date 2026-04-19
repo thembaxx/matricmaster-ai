@@ -1,7 +1,6 @@
 'use client';
 
 import { AnimatePresence, motion as m } from 'motion/react';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
 interface QuizProgressProps {
@@ -22,11 +21,10 @@ export function QuizProgress({
 			initial={{ opacity: 0, y: 10 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.1 }}
-			className="mb-6"
+			className="mb-5"
 		>
-			<div className="flex justify-between items-center mb-2">
-				<span className="text-[10px] font-medium text-muted-foreground">
-					Question{' '}
+			<div className="flex justify-between items-center mb-3">
+				<span className="text-xs font-medium text-muted-foreground/60">
 					<AnimatePresence mode="popLayout">
 						<m.span
 							key={currentQuestion}
@@ -34,19 +32,32 @@ export function QuizProgress({
 							animate={{ opacity: 1, scale: 1 }}
 							exit={{ opacity: 0, scale: 0.8 }}
 							transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-							className="inline-block"
+							className="inline-block font-semibold text-foreground"
 						>
 							{currentQuestion}
 						</m.span>
-					</AnimatePresence>{' '}
-					of {totalQuestions}
+					</AnimatePresence>
+					<span className="text-muted-foreground/40 mx-1">/</span>
+					<span className="text-muted-foreground/40">{totalQuestions}</span>
 				</span>
-				<Badge variant="secondary" className="text-[10px] font-medium rounded-full px-3">
-					{difficulty}
-				</Badge>
+				<div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/30">
+					<div
+						className={cn(
+							'w-1.5 h-1.5 rounded-full',
+							difficulty === 'easy'
+								? 'bg-emerald-400'
+								: difficulty === 'medium'
+									? 'bg-amber-400'
+									: 'bg-red-400'
+						)}
+					/>
+					<span className="text-[10px] font-medium text-muted-foreground/60 capitalize">
+						{difficulty}
+					</span>
+				</div>
 			</div>
 			<div
-				className="relative h-2 w-full overflow-hidden rounded-full bg-muted"
+				className="relative h-1.5 w-full overflow-hidden rounded-full bg-muted/20"
 				role="progressbar"
 				aria-valuenow={progressPercent}
 				aria-valuemin={0}
@@ -54,11 +65,7 @@ export function QuizProgress({
 				aria-label={`${progressPercent}% complete`}
 			>
 				<m.div
-					className={cn(
-						'h-full rounded-full',
-						'bg-gradient-to-r from-tiimo-lavender to-tiimo-lavender/70'
-					)}
-					style={{ boxShadow: '0 0 8px rgba(159, 133, 255, 0.3)' }}
+					className={cn('h-full rounded-full bg-primary/80')}
 					animate={{ width: `${progressPercent}%` }}
 					transition={{ type: 'spring', stiffness: 100, damping: 15 }}
 				/>

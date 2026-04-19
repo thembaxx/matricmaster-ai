@@ -1,89 +1,89 @@
 'use client';
 
 import { HugeiconsIcon } from '@hugeicons/react';
-import { motion as m, useReducedMotion } from 'motion/react';
+import { motion as m, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { useRef } from 'react';
 import { LANDING_FEATURES } from '@/content/landing';
-import { DURATION, EASING, STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 const FEATURES = LANDING_FEATURES;
 
 export function FeaturesSection() {
 	const shouldReduceMotion = useReducedMotion();
+	const sectionRef = useRef<HTMLElement>(null);
+	const { scrollYProgress } = useScroll({
+		target: sectionRef,
+		offset: ['start end', 'end start'],
+	});
+
+	const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
 	return (
-		<section className="py-24 lg:py-40 overflow-hidden">
+		<section ref={sectionRef} className="py-32 lg:py-48 overflow-hidden">
 			<m.div
-				initial={shouldReduceMotion ? undefined : { opacity: 0, y: 40 }}
+				initial={shouldReduceMotion ? undefined : { opacity: 0, y: 60 }}
 				whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
-				className="max-w-6xl mx-auto px-6 mb-16"
+				viewport={{ once: true, margin: '-150px' }}
+				transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+				className="max-w-7xl mx-auto px-6 mb-20"
 			>
-				<div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16">
+				<div className="flex flex-col lg:flex-row lg:items-end gap-10 lg:gap-20">
 					<div className="lg:flex-1">
-						<p className="text-xs font-black tracking-[0.2em] text-primary uppercase mb-4">
+						<p className="text-xs font-black tracking-[0.25em] text-primary uppercase mb-5">
 							everything you need
 						</p>
-						<h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-							Your complete toolkit for <span className="text-primary">matric success</span>
+						<h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
+							Your complete <br />
+							toolkit for <span className="text-primary">matric success</span>
 						</h2>
 					</div>
-					<p className="text-lg text-muted-foreground max-w-md lg:text-right">
+					<p className="text-lg text-muted-foreground max-w-sm lg:text-right leading-relaxed">
 						Every tool you need to pass your NSC exams in one powerful platform.
 					</p>
 				</div>
 			</m.div>
 
-			<m.div
-				variants={STAGGER_CONTAINER}
-				initial="hidden"
-				whileInView="visible"
-				viewport={{ once: true, margin: '-100px' }}
-				className="max-w-6xl mx-auto px-6"
-			>
-				<div className="grid grid-flow-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
+			<m.div style={{ y }} className="max-w-7xl mx-auto px-6">
+				<div className="grid grid-flow-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 					{FEATURES.slice(0, 6).map((feature, index) => (
 						<m.div
 							key={feature.title}
-							variants={STAGGER_ITEM}
-							className={`group relative p-6 rounded-2xl bg-muted/30 hover:bg-muted/50 border border-transparent hover:border-border/50 transition-all duration-500 will-change-transform overflow-hidden ${
+							initial={shouldReduceMotion ? undefined : { opacity: 0, y: 40 }}
+							whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+							viewport={{ once: true, margin: '-50px' }}
+							transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+							className={`group relative p-8 rounded-3xl bg-muted/20 hover:bg-muted/40 border border-transparent hover:border-border/40 transition-all duration-500 overflow-hidden ${
 								index === 0 ? 'md:col-span-2 md:row-span-2' : ''
 							}`}
-							whileHover={shouldReduceMotion ? undefined : { y: -4 }}
 						>
 							<div
-								className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${feature.color
-									.replace('bg-', 'bg-')
-									.replace('/10', '/5')}`}
+								className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${feature.color.replace('bg-', 'bg-').replace('/10', '/5')}`}
 							/>
 							<div className="relative z-10">
 								<div
-									className={`w-12 h-12 rounded-xl ${feature.color} flex items-center justify-center mb-5`}
+									className={`w-14 h-14 rounded-2xl ${feature.color} flex items-center justify-center mb-6`}
 								>
-									<HugeiconsIcon icon={feature.icon} className="w-6 h-6 text-background" />
+									<HugeiconsIcon icon={feature.icon} className="w-7 h-7 text-background" />
 								</div>
-								<h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+								<h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
 									{feature.title}
 								</h3>
-								<p className="text-sm text-muted-foreground leading-relaxed">
-									{feature.description}
-								</p>
+								<p className="text-muted-foreground leading-relaxed">{feature.description}</p>
 							</div>
-							<div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-transparent group-hover:w-full transition-all duration-500 rounded-full" />
+							<div className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-transparent w-0 group-hover:w-full transition-all duration-700 rounded-full" />
 						</m.div>
 					))}
 				</div>
 			</m.div>
 
 			<m.div
-				initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
-				whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+				initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+				whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
 				viewport={{ once: true }}
-				transition={{ delay: 0.3 }}
-				className="mt-12 text-center"
+				transition={{ delay: 0.4 }}
+				className="mt-14 text-center"
 			>
-				<span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-muted/50 text-sm font-medium text-muted-foreground">
-					+ {FEATURES.length - 6} more features waiting
+				<span className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-muted/40 text-sm font-medium text-muted-foreground">
+					+ {FEATURES.length - 6} more features
 				</span>
 			</m.div>
 		</section>

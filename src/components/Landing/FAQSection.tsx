@@ -1,13 +1,13 @@
 'use client';
 
-import { motion as m } from 'motion/react';
+import { motion as m, useScroll, useTransform } from 'motion/react';
+import { useRef } from 'react';
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
-import { DURATION, EASING } from '@/lib/animation-presets';
 
 const FAQ_ITEMS = [
 	{
@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
 	{
 		question: 'how accurate are the answers?',
 		answer:
-			'our ai is trained specifically on the south african curriculum and past exam papers, providing accurate explanations.',
+			'our AI is trained specifically on the south african curriculum and past exam papers, providing accurate explanations.',
 	},
 	{
 		question: 'is my data private?',
@@ -41,35 +41,40 @@ const FAQ_ITEMS = [
 ];
 
 export function FAQSection() {
+	const sectionRef = useRef<HTMLElement>(null);
+	const { scrollYProgress } = useScroll({
+		target: sectionRef,
+		offset: ['start end', 'end start'],
+	});
+
+	const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
+
 	return (
-		<section className="py-20 lg:py-32">
+		<section ref={sectionRef} className="py-32 lg:py-48">
 			<m.div
-				initial={{ opacity: 0, y: 40 }}
+				initial={{ opacity: 0, y: 50 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
+				transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
 				className="text-center mb-16"
 			>
-				<h2 className="heading-2 mb-4">frequently asked questions</h2>
-				<p className="body-md text-muted-foreground mx-auto">
-					everything you need to know about matricmaster.
+				<p className="text-xs font-black tracking-[0.25em] text-primary uppercase mb-5">faq</p>
+				<h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-5">
+					Frequently asked questions
+				</h2>
+				<p className="text-lg text-muted-foreground max-w-xl mx-auto">
+					Everything you need to know about Lumni.
 				</p>
 			</m.div>
 
-			<m.div
-				initial={{ opacity: 0, y: 20 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: DURATION.normal, ease: EASING.easeOut, delay: 0.2 }}
-				className="max-w-3xl mx-auto px-4"
-			>
+			<m.div style={{ y }} className="max-w-3xl mx-auto px-6">
 				<Accordion type="single" collapsible className="w-full">
 					{FAQ_ITEMS.map((item, index) => (
-						<AccordionItem key={index} value={`item-${index}`} className="border-border">
-							<AccordionTrigger className="body-md font-medium hover:no-underline">
+						<AccordionItem key={index} value={`item-${index}`} className="border-border/40">
+							<AccordionTrigger className="text-lg font-medium hover:no-underline py-5">
 								{item.question}
 							</AccordionTrigger>
-							<AccordionContent className="body-md text-muted-foreground">
+							<AccordionContent className="text-muted-foreground text-base leading-relaxed">
 								{item.answer}
 							</AccordionContent>
 						</AccordionItem>

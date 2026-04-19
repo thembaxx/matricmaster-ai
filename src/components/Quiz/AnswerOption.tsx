@@ -26,7 +26,7 @@ interface Particle {
 	color: string;
 }
 
-const PARTICLE_COLORS = ['#a78bfa', '#6ee7b7', '#fbbf24', '#60a5fa', '#f472b6', '#34d399'];
+const PARTICLE_COLORS = ['#10b981', '#34d399', '#6ee7b7', '#059669', '#047857', '#065f46'];
 
 export function AnswerOption({
 	id,
@@ -97,34 +97,32 @@ export function AnswerOption({
 	const getContainerClasses = () => {
 		if (isSelected) {
 			if (isChecked) {
-				return isCorrect
-					? 'bg-tiimo-green/10 border-tiimo-green'
-					: 'bg-destructive/10 border-destructive';
+				return isCorrect ? 'bg-emerald-50 border-emerald-500/50' : 'bg-red-50 border-red-500/50';
 			}
-			return 'bg-tiimo-lavender/10 border-tiimo-lavender';
+			return 'bg-primary/8 border-primary/30';
 		}
 		if (isChecked && isCorrect) {
-			return 'bg-tiimo-green/10 border-tiimo-green';
+			return 'bg-emerald-50 border-emerald-500/50';
 		}
-		return 'bg-card border-border/50 hover:border-tiimo-lavender/30';
+		return 'bg-muted/20 border-border/40 hover:border-primary/25 hover:bg-muted/30';
 	};
 
 	const getIndicatorClasses = () => {
 		if (isSelected) {
 			if (isChecked) {
-				return isCorrect ? 'bg-tiimo-green text-white' : 'bg-destructive text-white';
+				return isCorrect ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white';
 			}
-			return 'bg-tiimo-lavender text-white';
+			return 'bg-primary text-primary-foreground';
 		}
 		if (isChecked && isCorrect) {
-			return 'bg-tiimo-green text-white';
+			return 'bg-emerald-500 text-white';
 		}
-		return 'bg-secondary text-muted-foreground';
+		return 'bg-muted/40 text-muted-foreground/60';
 	};
 
 	const getLabelClasses = () => {
 		if (isSelected && isChecked && !isCorrect) {
-			return 'text-muted-foreground';
+			return 'text-muted-foreground/60';
 		}
 		return 'text-foreground';
 	};
@@ -195,13 +193,13 @@ export function AnswerOption({
 				<m.div
 					style={reduced.current ? undefined : { scale: iconScaleSpring }}
 					className={cn(
-						'w-6 h-6 rounded-full flex items-center justify-center text-white',
-						isCorrect ? 'bg-tiimo-green' : 'bg-destructive'
+						'w-5 h-5 rounded-full flex items-center justify-center text-white',
+						isCorrect ? 'bg-emerald-500' : 'bg-red-500'
 					)}
 				>
 					<HugeiconsIcon
 						icon={isCorrect ? CheckmarkCircle02Icon : CancelCircleIcon}
-						className="w-4 h-4"
+						className="w-3.5 h-3.5"
 					/>
 				</m.div>
 			)}

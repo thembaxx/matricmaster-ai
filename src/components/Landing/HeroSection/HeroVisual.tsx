@@ -47,7 +47,7 @@ export function HeroVisual() {
 							transition={{
 								delay: 0.4,
 								duration: 3.5,
-								ease: 'easeInOut',
+								ease: 'easeInOut' as const,
 							}}
 							className="absolute -top-2 -left-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-elevation-2 border border-border/50 flex flex-col items-center justify-center p-2 z-10 will-change-transform"
 						>
@@ -65,7 +65,7 @@ export function HeroVisual() {
 							animate={{ opacity: 1, scale: 1, y: 0 }}
 							transition={{
 								delay: 0.5,
-								ease: 'easeInOut',
+								ease: 'easeInOut' as const,
 							}}
 							className="absolute -bottom-2 -right-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-elevation-2 border border-border/50 flex flex-col items-center justify-center p-2 z-20 will-change-transform"
 						>
