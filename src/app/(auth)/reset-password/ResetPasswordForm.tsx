@@ -102,7 +102,7 @@ function ResetPasswordFormContent() {
 						href="/login"
 						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6 tracking-wider"
 					>
-						<HugeiconsIcon icon={ArrowLeft02Icon} className="w-4 h-4 mr-2" /> Back to Sign in
+						<HugeiconsIcon icon={ArrowLeft02Icon} className="w-4 h-4 mr-2" /> back to sign in
 					</Link>
 
 					<m.div
@@ -128,8 +128,8 @@ function ResetPasswordFormContent() {
 							className="text-muted-foreground text-balance font-medium text-base"
 						>
 							{!isSuccess
-								? 'Enter your new password below.'
-								: 'Your password has been reset successfully!'}
+								? 'enter your new password below.'
+								: 'your password has been reset successfully!'}
 						</m.p>
 					</m.div>
 
@@ -165,7 +165,7 @@ function ResetPasswordFormContent() {
 										'bg-primary text-primary-foreground shadow-primary/20'
 									)}
 								>
-									Go to Sign in
+									go to sign in
 								</Button>
 							</m.div>
 						</m.div>
@@ -188,7 +188,7 @@ function ResetPasswordFormContent() {
 									{...register('password')}
 									id={passwordId}
 									type="password"
-									placeholder="Enter new password"
+									placeholder="enter new password"
 									className="bg-background/50"
 								/>
 								{errors.password && (
@@ -203,13 +203,13 @@ function ResetPasswordFormContent() {
 									htmlFor={confirmPasswordId}
 									className="text-xs font-bold text-label-primary tracking-wider ml-1"
 								>
-									Confirm Password
+									confirm password
 								</Label>
 								<Input
 									{...register('confirmPassword')}
 									id={confirmPasswordId}
 									type="password"
-									placeholder="Confirm new password"
+									placeholder="confirm new password"
 									className="bg-background/50"
 								/>
 								{errors.confirmPassword && (
@@ -248,7 +248,7 @@ function ResetPasswordFormContent() {
 					transition={{ delay: 0.5 }}
 					className="text-center text-muted-foreground/60 text-[10px] font-bold tracking-widest mt-8"
 				>
-					&copy; {new Date().getFullYear()} {appConfig.name} AI
+					&copy; {new Date().getFullYear()} {appConfig.name}
 				</m.p>
 			</div>
 		</div>

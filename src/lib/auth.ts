@@ -22,16 +22,19 @@ let authInstance: AuthInstance | null = null;
 const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
 
 // Validate BETTER_AUTH_SECRET
-const authSecret = process.env.BETTER_AUTH_SECRET;
-if (!authSecret) {
+const authSecret = process.env.BETTER_AUTH_SECRET || (isBuildTime ? 'build_time_placeholder_secret_32_characters_long' : '');
+if (!authSecret && !isBuildTime) {
 	throw new Error('BETTER_AUTH_SECRET environment variable is required');
 }
-if (authSecret.length < 32) {
-	throw new Error('BETTER_AUTH_SECRET must be at least 32 characters for security');
-}
-const placeholderPatterns = ['your-secret', 'changeme', 'dummy', 'placeholder'];
-if (placeholderPatterns.some((p) => authSecret.toLowerCase().includes(p))) {
-	throw new Error('BETTER_AUTH_SECRET appears to be a placeholder. Please set a secure secret.');
+
+if (!isBuildTime && authSecret) {
+	if (authSecret.length < 32) {
+		throw new Error('BETTER_AUTH_SECRET must be at least 32 characters for security');
+	}
+	const placeholderPatterns = ['your-secret', 'changeme', 'dummy', 'placeholder'];
+	if (placeholderPatterns.some((p) => authSecret.toLowerCase().includes(p))) {
+		throw new Error('BETTER_AUTH_SECRET appears to be a placeholder. Please set a secure secret.');
+	}
 }
 
 export const authConfig = {

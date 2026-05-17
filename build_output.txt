@@ -1,0 +1,46 @@
+$ next build
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+▲ Next.js 16.2.4 (Turbopack)
+- Experiments (use with caution):
+  · clientTraceMetadata
+  · optimizePackageImports
+  ✓ viewTransition
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 78s
+  Running next.config.js provided runAfterProductionCompile ...
+✓ Completed runAfterProductionCompile in 1118ms
+  Running TypeScript ...
+  Finished TypeScript in 83s ...
+  Collecting page data using 3 workers ...
+Error: BETTER_AUTH_SECRET environment variable is required
+    at module evaluation (.next/server/chunks/_0n12-4v._.js:375:46437)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:853:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:877:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:281:20)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:853:9)
+    at instantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:882:12)
+    at getOrInstantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:895:12)
+    at Object.m (.next/server/chunks/[turbopack]_runtime.js:898:18)
+    at Object.<anonymous> (.next/server/app/api/account/export-data/route.js:22:3)
+Error: BETTER_AUTH_SECRET environment variable is required
+    at module evaluation (.next/server/chunks/_0n12-4v._.js:375:46437)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:853:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:877:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:281:20)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:853:9)
+    at instantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:882:12)
+    at getOrInstantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:895:12)
+    at Object.m (.next/server/chunks/[turbopack]_runtime.js:898:18)
+    at Object.<anonymous> (.next/server/app/api/account/export-data/route.js:22:3)
+
+> Build error occurred
+Error: Failed to collect page data for /api/account/export-data
+    at ignore-listed frames {
+  type: 'Error'
+}
+error: script "build" exited with code 1
