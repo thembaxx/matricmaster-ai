@@ -1,0 +1,39 @@
+src/__tests__/lib/enrichment/validator.test.ts(346,70): error TS2345: Argument of type '{ fields: { name: { type: string; required: boolean; minLength: number; }; age: { type: string; min: number; max: number; }; }; }' is not assignable to parameter of type 'RecordSchema'.
+  Types of property 'fields' are incompatible.
+    Type '{ name: { type: string; required: boolean; minLength: number; }; age: { type: string; min: number; max: number; }; }' is not assignable to type 'Record<string, FieldSpec>'.
+      Property 'name' is incompatible with index signature.
+        Type '{ type: string; required: boolean; minLength: number; }' is not assignable to type 'FieldSpec'.
+          Types of property 'type' are incompatible.
+            Type 'string' is not assignable to type '"string" | "number" | "boolean" | "object" | "date" | "array" | "any"'.
+src/__tests__/lib/enrichment/validator.test.ts(373,70): error TS2345: Argument of type '{ fields: { name: { type: string; required: boolean; }; }; }' is not assignable to parameter of type 'RecordSchema'.
+  Types of property 'fields' are incompatible.
+    Type '{ name: { type: string; required: boolean; }; }' is not assignable to type 'Record<string, FieldSpec>'.
+      Property 'name' is incompatible with index signature.
+        Type '{ type: string; required: boolean; }' is not assignable to type 'FieldSpec'.
+          Types of property 'type' are incompatible.
+            Type 'string' is not assignable to type '"string" | "number" | "boolean" | "object" | "date" | "array" | "any"'.
+src/__tests__/lib/mock-data/distributions.test.ts(151,9): error TS6133: '_lowDates' is declared but its value is never read.
+src/__tests__/lib/mock-data/generator-v2.test.ts(209,12): error TS2352: Conversion of type 'FlashcardReview' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'FlashcardReview'.
+src/__tests__/lib/mock-data/generator-v2.test.ts(421,12): error TS2352: Conversion of type 'GeneratedUser & DataSourceTag' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'GeneratedUser & DataSourceTag'.
+src/__tests__/lib/mock-data/generator-v2.test.ts(422,12): error TS2352: Conversion of type 'GeneratedUser & DataSourceTag' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'GeneratedUser & DataSourceTag'.
+src/__tests__/lib/mock-data/generator-v2.test.ts(423,12): error TS2352: Conversion of type 'GeneratedUser & DataSourceTag' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'GeneratedUser & DataSourceTag'.
+src/__tests__/lib/mock-data/generator-v2.test.ts(435,12): error TS2352: Conversion of type 'GeneratedQuizResult & DataSourceTag' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'GeneratedQuizResult & DataSourceTag'.
+src/__tests__/lib/mock-data/generator-v2.test.ts(446,11): error TS2352: Conversion of type 'GeneratedStudySession & DataSourceTag' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'GeneratedStudySession & DataSourceTag'.
+src/__tests__/lib/mock-data/generator-v2.test.ts(457,12): error TS2352: Conversion of type 'GeneratedTopicMastery & DataSourceTag' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'GeneratedTopicMastery & DataSourceTag'.
+src/__tests__/lib/mock-data/generator-v2.test.ts(469,12): error TS2352: Conversion of type 'GeneratedAchievement & DataSourceTag' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'GeneratedAchievement & DataSourceTag'.
+src/__tests__/utils/data-generators.ts(174,2): error TS2322: Type '{ id?: string | undefined; score?: number | undefined; correctAnswers: number; totalQuestions: number; durationSeconds: number; accuracy: number; subjectId: number; subject?: string | undefined; ... 4 more ...; topicStats?: TopicStats[] | undefined; }' is not assignable to type 'QuizResult'.
+  Types of property 'id' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+src/__tests__/utils/mocks.ts(116,2): error TS2322: Type '{ id?: string | undefined; score?: number | undefined; correctAnswers: number; totalQuestions: number; durationSeconds: number; accuracy: number; subjectId: number; subject?: string | undefined; ... 4 more ...; topicStats?: TopicStats[] | undefined; }' is not assignable to type 'QuizResult'.
+  Types of property 'id' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.

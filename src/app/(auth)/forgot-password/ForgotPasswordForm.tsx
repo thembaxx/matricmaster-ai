@@ -82,7 +82,7 @@ export function ForgotPasswordForm() {
 						href="/login"
 						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6  tracking-wider"
 					>
-						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> Back to Sign in
+						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> back to sign in
 					</Link>
 
 					<m.div
@@ -192,7 +192,7 @@ export function ForgotPasswordForm() {
 					transition={{ delay: 0.5 }}
 					className="text-center text-muted-foreground/60 text-[10px] font-bold  tracking-widest mt-8"
 				>
-					&copy; {new Date().getFullYear()} {appConfig.name} AI
+					&copy; {new Date().getFullYear()} {appConfig.name}
 				</m.p>
 			</div>
 		</div>
