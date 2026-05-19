@@ -22,7 +22,9 @@ let authInstance: AuthInstance | null = null;
 const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
 
 // Validate BETTER_AUTH_SECRET
-const authSecret = process.env.BETTER_AUTH_SECRET || (isBuildTime ? 'build_time_placeholder_secret_32_characters_long' : '');
+const authSecret =
+	process.env.BETTER_AUTH_SECRET ||
+	(isBuildTime ? 'build_time_placeholder_secret_32_characters_long' : '');
 if (!authSecret && !isBuildTime) {
 	throw new Error('BETTER_AUTH_SECRET environment variable is required');
 }

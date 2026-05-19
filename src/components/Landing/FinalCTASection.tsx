@@ -27,7 +27,7 @@ export function FinalCTASection() {
 				viewport={{ once: true }}
 				transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
 				style={{ y, scale }}
-				className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-primary via-primary to-secondary p-12 lg:p-24"
+				className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-secondary p-12 lg:p-24"
 			>
 				<div className="absolute inset-0">
 					<div className="absolute top-1/4 -left-20 w-96 h-96 bg-white/10 rounded-full blur-[120px]" />
@@ -36,13 +36,13 @@ export function FinalCTASection() {
 
 				<div className="relative z-10 text-center space-y-10">
 					<h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-						Start your
+						start your
 						<br />
 						matric journey now
 					</h2>
 					<p className="text-lg md:text-xl text-white/80 max-w-xl mx-auto leading-relaxed">
-						Get access to AI-powered study tools, past exam papers, and instant explanations
-						designed specifically for NSC Grade 12 success.
+						get access to expert study tools, past exam papers, and instant explanations designed
+						specifically for nsc grade 12 success.
 					</p>
 					<div className="flex flex-col sm:flex-row gap-5 justify-center max-w-md mx-auto">
 						<Button
@@ -51,12 +51,12 @@ export function FinalCTASection() {
 							onClick={() => router.push('/dashboard')}
 						>
 							<span className="flex items-center gap-3">
-								Get Started Free
+								get started free
 								<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 							</span>
 						</Button>
 					</div>
-					<p className="text-sm text-white/60">No credit card needed</p>
+					<p className="text-sm text-white/60">no credit card needed</p>
 				</div>
 			</motion.div>
 		</section>
