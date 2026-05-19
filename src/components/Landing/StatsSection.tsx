@@ -26,7 +26,7 @@ export function StatsSection() {
 			>
 				<m.div
 					style={{ y }}
-					className="relative rounded-[3rem] bg-muted/20 p-10 lg:p-16 overflow-hidden"
+					className="relative rounded-3xl bg-muted/20 p-10 lg:p-16 overflow-hidden"
 				>
 					<div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] via-transparent to-secondary/[0.03]" />
 					<div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px]" />

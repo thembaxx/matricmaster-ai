@@ -14,7 +14,7 @@ export function HeroBadge() {
 		>
 			<Badge className="bg-tiimo-lavender/15 text-tiimo-lavender rounded-full px-4 py-1.5 label-xs">
 				<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
-				Trusted by 50,000+ South African students
+				trusted by 50,000+ south african students
 			</Badge>
 		</motion.div>
 	);

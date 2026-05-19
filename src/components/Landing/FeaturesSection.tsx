@@ -28,16 +28,16 @@ export function FeaturesSection() {
 			>
 				<div className="flex flex-col lg:flex-row lg:items-end gap-10 lg:gap-20">
 					<div className="lg:flex-1">
-						<p className="text-xs font-black tracking-[0.25em] text-primary uppercase mb-5">
+						<p className="text-xs font-black tracking-[0.25em] text-primary mb-5">
 							everything you need
 						</p>
 						<h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
-							Your complete <br />
+							your complete <br />
 							toolkit for <span className="text-primary">matric success</span>
 						</h2>
 					</div>
 					<p className="text-lg text-muted-foreground max-w-sm lg:text-right leading-relaxed">
-						Every tool you need to pass your NSC exams in one powerful platform.
+						every tool you need to pass your nsc exams in one powerful platform.
 					</p>
 				</div>
 			</m.div>

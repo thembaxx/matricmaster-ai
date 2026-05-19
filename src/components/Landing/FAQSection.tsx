@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
 	{
 		question: 'how accurate are the answers?',
 		answer:
-			'our AI is trained specifically on the south african curriculum and past exam papers, providing accurate explanations.',
+			'our tutor is trained specifically on the south african curriculum and past exam papers, providing accurate explanations.',
 	},
 	{
 		question: 'is my data private?',
@@ -58,12 +58,12 @@ export function FAQSection() {
 				transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
 				className="text-center mb-16"
 			>
-				<p className="text-xs font-black tracking-[0.25em] text-primary uppercase mb-5">faq</p>
+				<p className="text-xs font-black tracking-[0.25em] text-primary mb-5">faq</p>
 				<h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-5">
-					Frequently asked questions
+					frequently asked questions
 				</h2>
 				<p className="text-lg text-muted-foreground max-w-xl mx-auto">
-					Everything you need to know about Lumni.
+					everything you need to know about lumni.
 				</p>
 			</m.div>
 

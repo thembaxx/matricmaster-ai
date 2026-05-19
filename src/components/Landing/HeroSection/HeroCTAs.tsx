@@ -50,7 +50,7 @@ export function HeroCTAs({ onAuthRequired }: HeroCTAsProps) {
 					onClick={() => onAuthRequired('/dashboard')}
 				>
 					<span className="flex items-center gap-2.5">
-						Start Studying Free
+						start studying free
 						<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" aria-hidden="true" />
 					</span>
 				</Button>
@@ -62,7 +62,7 @@ export function HeroCTAs({ onAuthRequired }: HeroCTAsProps) {
 					className="w-full sm:w-auto h-14 px-8 rounded-full text-base font-medium text-foreground border-border/60 bg-background/50 backdrop-blur-sm hover:bg-background/80 hover:border-border active:scale-[0.98] transition-all duration-300"
 					onClick={() => router.push('/past-papers')}
 				>
-					<span className="flex items-center gap-2.5">Explore Past Papers</span>
+					<span className="flex items-center gap-2.5">explore past papers</span>
 				</Button>
 			</motion.div>
 		</motion.div>
