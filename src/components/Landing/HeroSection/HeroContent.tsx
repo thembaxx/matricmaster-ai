@@ -65,8 +65,8 @@ export function HeroContent() {
 				variants={itemVariants}
 				className="mt-10 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto text-center text-balance leading-relaxed"
 			>
-				AI-powered explanations, adaptive practice, and proven study methods. Join thousands of
-				South African students who achieved their university goals.
+				expert-guided explanations, adaptive practice, and proven study methods. join thousands of
+				south african students who achieved their university goals.
 			</motion.p>
 		</motion.div>
 	);

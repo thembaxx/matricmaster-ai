@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
 import { HeroContent } from './HeroContent';
 import { HeroCTAs } from './HeroCTAs';
+import { HeroVisual } from './HeroVisual';
 
 interface HeroSectionProps {
 	onAuthRequired: (path: string) => void;
@@ -31,18 +32,18 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 			className="relative min-h-[95vh] flex items-center justify-center overflow-hidden"
 		>
 			<motion.div style={{ y: bgY }} className="absolute inset-0">
-				<div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+				<div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
 				<motion.div
 					style={{ scale: orb1Scale, y: orb1Y }}
 					className="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] rounded-full blur-[180px] opacity-40"
 				>
-					<div className="w-full h-full bg-gradient-to-br from-primary/30 to-primary/5 rounded-full" />
+					<div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/5 rounded-full" />
 				</motion.div>
 				<motion.div
 					style={{ scale: orb2Scale, y: orb2Y }}
 					className="absolute -bottom-[30%] -left-[20%] w-[900px] h-[900px] rounded-full blur-[200px] opacity-30"
 				>
-					<div className="w-full h-full bg-gradient-to-tr from-secondary/40 via-secondary/20 to-transparent rounded-full" />
+					<div className="w-full h-full bg-gradient-to-tr from-secondary/40 via-primary/20 to-transparent rounded-full" />
 				</motion.div>
 			</motion.div>
 
@@ -53,16 +54,20 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 				}}
 			/>
 
-			<motion.div
-				style={{ y: textY, opacity: textOpacity }}
-				className="container relative z-10 mx-auto max-w-6xl px-6 py-24 sm:py-32"
-			>
-				<HeroContent />
+			<div className="container relative z-10 mx-auto max-w-7xl px-6 py-24 sm:py-32">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+					<motion.div style={{ y: textY, opacity: textOpacity }}>
+						<HeroContent />
+						<div className="mt-14">
+							<HeroCTAs onAuthRequired={onAuthRequired} />
+						</div>
+					</motion.div>
 
-				<div className="mt-14">
-					<HeroCTAs onAuthRequired={onAuthRequired} />
+					<div className="relative hidden lg:block">
+						<HeroVisual />
+					</div>
 				</div>
-			</motion.div>
+			</div>
 
 			<motion.div
 				initial={{ opacity: 0 }}

@@ -30,10 +30,10 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 				className="max-w-7xl mx-auto px-6 mb-16"
 			>
 				<h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-5">
-					Your subjects
+					your subjects
 				</h2>
 				<p className="text-lg text-muted-foreground">
-					Pick your subjects and start practicing for the NSC.
+					pick your subjects and start practicing for the nsc.
 				</p>
 			</m.div>
 

@@ -9,19 +9,19 @@ import { Button } from '@/components/ui/button';
 const STEPS = [
 	{
 		icon: Camera01Icon,
-		title: 'Upload question',
+		title: 'upload question',
 		description: 'snap a photo or type any past paper question',
 		color: 'bg-primary/10 text-primary',
 	},
 	{
 		icon: SparklesIcon,
-		title: 'Get AI help',
-		description: 'our AI explains the solution step-by-step',
+		title: 'get expert help',
+		description: 'the tutor explains the solution step-by-step',
 		color: 'bg-secondary/10 text-secondary',
 	},
 	{
 		icon: ChartIcon,
-		title: 'Track progress',
+		title: 'track progress',
 		description: "see which topics you've mastered and what needs work",
 		color: 'bg-primary/10 text-primary',
 	},
@@ -47,14 +47,12 @@ export function HowItWorksSection() {
 				transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
 				className="text-center mb-20 relative z-10"
 			>
-				<p className="text-xs font-black tracking-[0.25em] text-primary uppercase mb-5">
-					how it works
-				</p>
+				<p className="text-xs font-black tracking-[0.25em] text-primary mb-5">how it works</p>
 				<h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-5">
-					Three steps to <span className="text-primary">success</span>
+					three steps to <span className="text-primary">success</span>
 				</h2>
 				<p className="text-lg text-muted-foreground max-w-xl mx-auto">
-					Three simple steps to boost your matric results
+					three simple steps to boost your matric results
 				</p>
 			</m.div>
 
@@ -99,7 +97,7 @@ export function HowItWorksSection() {
 				className="mt-16 text-center relative z-10"
 			>
 				<Button size="lg" className="px-10 h-14 rounded-full text-base font-semibold">
-					Try It Free
+					try it free
 				</Button>
 			</m.div>
 		</section>
