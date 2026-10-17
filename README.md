@@ -1,3 +1,23 @@
+# MatricMaster AI · Lumni AI
+
+A South African Grade 12 study application combining past-paper practice, AI explanations, study planning and progress views.
+
+[Browse the source](https://github.com/thembaxx/matricmaster-ai)
+
+## Engineering highlights
+
+Drizzle database tooling, Playwright browser tests, Vitest unit tests and a typed React interface. AI and database services require configuration.
+
+## Technology
+
+Declared in [package.json](package.json): Next.js `16.2.4` · React `^19.2.5` · TypeScript `^6.0.3` · Tailwind CSS `^4.2.2` · Motion `^12.38.0` · Framer Motion `^12.38.0` · KaTeX `^0.16.45` · Drizzle ORM `^0.45.2` · Better Auth `^1.6.5` · TanStack Query `^5.99.0` · Leaflet `^1.9.4` · AI SDK Google `^3.0.64` · WebLLM `^0.2.82` · Zod `^4.3.6`.
+
+**Quality tooling:** `lint`, `typecheck`, `test`, `test:e2e`, `test:unit` scripts are available. See the setup guide below for prerequisites; this documentation pass does not assert that those checks were run.
+
+---
+
+## Project guide
+
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
